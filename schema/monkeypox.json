@@ -1,0 +1,261 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "places": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/place"
+      }
+    },
+    "age": {
+      "type": "string",
+      "enum": [
+        "<18",
+        "18-24",
+        "25-34",
+        "35-44",
+        "45-54",
+        "55-64",
+        "65+"
+      ]
+    },
+    "anotherPlace": {
+      "type": "string",
+      "enum": [
+        "Yes – Add place",
+        "No – Done adding places",
+        "Sí – Agrega el lugar",
+        "No – Terminé de agregar lugares"
+      ]
+    },
+    "bestApp": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "covidTestPositive": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No",
+        "Did not test",
+        "Sí",
+        "No me hice la prueba"
+      ]
+    },
+    "groupSex": {
+      "type": "string"
+    },
+    "hivPrep": {
+      "type": "string",
+      "enum": [
+        "Living with HIV",
+        "Not living with HIV",
+        "Unsure",
+        "Vivo con VIH",
+        "No vivo con VIH",
+        "No sé"
+      ]
+    },
+    "hivStatus": {
+      "type": "string",
+      "enum": [
+        "Living with HIV",
+        "Not living with HIV",
+        "Unsure",
+        "Vivo con VIH",
+        "No vivo con VIH",
+        "No sé"
+      ]
+    },
+    "hivSuppressed": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No",
+        "Unsure",
+        "Sí",
+        "No sé"
+      ]
+    },
+    "mapGroupSex": {
+      "type": "string"
+    },
+    "mapHome": {
+      "type": "string"
+    },
+    "monkeypoxCare": {
+      "type": "string"
+    },
+    "monkeypoxTest": {
+      "type": "string"
+    },
+    "monkeypoxVaccine": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No",
+        "Unsure",
+        "Sí",
+        "No sé"
+      ]
+    },
+    "raceAPI": {
+      "type": "boolean"
+    },
+    "raceBlack": {
+      "type": "boolean"
+    },
+    "raceLatinx": {
+      "type": "boolean"
+    },
+    "raceOther": {
+      "type": "boolean"
+    },
+    "raceWhite": {
+      "type": "boolean"
+    },
+    "referrerEnglish": {
+      "type": "boolean"
+    },
+    "referrerID": {
+      "type": "string"
+    },
+    "sex": {
+      "type": "string",
+      "enum": [
+        "Male",
+        "Female",
+        "Other",
+        "Hombre",
+        "Mujer",
+        "Otro"
+      ]
+    },
+    "sexOrientation": {
+      "type": "string",
+      "enum": [
+        "Gay",
+        "Bisexual",
+        "Straight",
+        "Queer",
+        "Something Else",
+        "Heterosexual",
+        "Otra"
+      ]
+    },
+    "symptomBackAche": {
+      "type": "boolean"
+    },
+    "symptomBodyRash": {
+      "type": "boolean"
+    },
+    "symptomChills": {
+      "type": "boolean"
+    },
+    "symptomExhaustion": {
+      "type": "boolean"
+    },
+    "symptomFacialRash": {
+      "type": "boolean"
+    },
+    "symptomFever": {
+      "type": "boolean"
+    },
+    "symptomHeadache": {
+      "type": "boolean"
+    },
+    "symptomMouth": {
+      "type": "boolean"
+    },
+    "symptomMuscleAche": {
+      "type": "boolean"
+    },
+    "symptomOther": {
+      "type": "boolean"
+    },
+    "symptomRectalDiscomfort": {
+      "type": "boolean"
+    },
+    "symptomSoreThroat": {
+      "type": "boolean"
+    },
+    "symptomSoresAnus": {
+      "type": "boolean"
+    },
+    "symptomSwollenGlands": {
+      "type": "boolean"
+    },
+    "travelTime": {
+      "type": "string"
+    },
+    "vaccinationDate": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "place": {
+      "type": "object",
+      "properties": {
+        "censusTract": {
+          "type": "string"
+        },
+        "placeSex": {
+          "type": "string"
+        },
+        "placeType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "censusTract",
+        "placeSex",
+        "placeType"
+      ]
+    }
+  },
+  "required": [
+    "age",
+    "anotherPlace",
+    "bestApp",
+    "channel",
+    "covidTestPositive",
+    "groupSex",
+    "hivPrep",
+    "hivStatus",
+    "hivSuppressed",
+    "mapGroupSex",
+    "mapHome",
+    "monkeypoxCare",
+    "monkeypoxTest",
+    "monkeypoxVaccine",
+    "raceAPI",
+    "raceBlack",
+    "raceLatinx",
+    "raceOther",
+    "raceWhite",
+    "referrerEnglish",
+    "referrerID",
+    "sex",
+    "sexOrientation",
+    "symptomBackAche",
+    "symptomBodyRash",
+    "symptomChills",
+    "symptomExhaustion",
+    "symptomFacialRash",
+    "symptomFever",
+    "symptomHeadache",
+    "symptomMouth",
+    "symptomMuscleAche",
+    "symptomOther",
+    "symptomRectalDiscomfort",
+    "symptomSoreThroat",
+    "symptomSoresAnus",
+    "symptomSwollenGlands",
+    "travelTime",
+    "vaccinationDate",
+    "places"
+  ]
+}

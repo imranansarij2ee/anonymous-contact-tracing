@@ -1,0 +1,58 @@
+{
+  "$id": "/Test",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "age": {
+      "$id": "#/properties/age",
+      "type": "string",
+      "enum": [
+        "<18",
+        "18-24",
+        "25-34",
+        "35-44",
+        "45-54",
+        "55-64",
+        "65+"
+      ]
+    },
+    "anotherPlace": {
+      "type": "string",
+      "$id": "#/properties/anotherPlace",
+      "enum": [
+        "Yes – Add place",
+        "No – Done adding places",
+        "Sí – Agrega el lugar",
+        "No – Terminé de agregar lugares"
+      ]
+    },
+    "bestApp": {
+      "type": "string",
+      "$id": "#/properties/bestApp"
+    },
+    "channel": {
+      "type": "string",
+      "$id": "#/properties/channel"
+
+    },
+    "covidTestPositive": {
+      "type": "string",
+      "$id": "#/properties/covidTestPositive",
+      "enum": [
+        "Yes",
+        "No",
+        "Did not test",
+        "Sí",
+        "No me hice la prueba"
+      ]
+    }
+  },
+  "required": [
+    "age",
+    "anotherPlace",
+    "bestApp",
+    "channel",
+    "covidTestPositive"
+  ]
+}

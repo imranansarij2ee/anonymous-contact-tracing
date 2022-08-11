@@ -13,6 +13,6 @@ app.use(bodyParser.json({ limit: '1mb' }));
 
 app.use('/', routes)
 
-app.listen(port, () => {
+app.listen(process.env.SERVER_PORT || 9000, () => {
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });

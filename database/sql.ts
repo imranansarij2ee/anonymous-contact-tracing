@@ -1,14 +1,25 @@
 import {Pool} from 'pg';
 import {v4} from 'uuid';
 import {User} from '../controller/user';
-import {adjectives, animals, colors, Config, uniqueNamesGenerator} from "unique-names-generator";
+import {adjectives, colors, Config, names, uniqueNamesGenerator} from "unique-names-generator";
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+const sqlHost = process.env.SQL_HOST;
+const sqlUser = process.env.SQL_USER;
+const sqlPort: number = Number(process.env.SQL_PORT) || 5432;
+const sqlPass = process.env.SQL_PASS;
+const dbName = process.env.SQL_DB_NAME;
 
 const pool = new Pool({
     max: 20,
-    connectionString: 'postgres://imran:root@localhost:5432/anon_survey',
-    idleTimeoutMillis: 5432
-});
+    host: sqlHost,
+    port: sqlPort,
+    user: sqlUser,
+    password: sqlPass,
+    database: dbName
 
+});
 
 async function checkIfNameExist(username: string): Promise<boolean> {
 
@@ -16,16 +27,14 @@ async function checkIfNameExist(username: string): Promise<boolean> {
                  FROM user_info
                  WHERE user_name = '${username}'`;
     const user = await findUser(sql);
-    if (Array.isArray(user) && user.length > 0) {
-        return false;
-    }
-    return true;
+    return !(Array.isArray(user) && user.length > 0);
+
 }
 
 export async function findUser(sql: string): Promise<User> {
     try {
         const client = await pool.connect();
-        const {rows: results, rowCount} = await client.query(sql);
+        const {rows: results} = await client.query(sql);
         let data = null;
         if (Array.isArray(results) && results.length > 0) {
             data = results.pop();
@@ -41,16 +50,12 @@ export async function findUser(sql: string): Promise<User> {
 
 function generateUserName(): string {
     const customConfig: Config = {
-        dictionaries: [adjectives, colors, animals],
-        separator: '-'
+        dictionaries: [names, adjectives, colors],
+        separator: '-',
+        style: "lowerCase"
     };
 
-    // const randomName: string = uniqueNamesGenerator({
-    //     dictionaries: [adjectives, colors, animals]
-    // });
-    const shortName: string = uniqueNamesGenerator(customConfig);
-
-    return shortName;
+    return uniqueNamesGenerator(customConfig);
 }
 
 export async function generateUser(): Promise<Object> {
@@ -70,7 +75,7 @@ export async function generateUser(): Promise<Object> {
         if (rowCount == 0) {
             console.error("no entry created")
         }
-        client.release();
+        // client.release();
         return {
             user_name,
             public_id

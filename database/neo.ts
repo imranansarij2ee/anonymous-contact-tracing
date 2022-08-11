@@ -1,12 +1,11 @@
-import neo4j from 'neo4j-driver'
-// import dotenv from 'dotenv';
-// dotenv.config();
+import * as neo4j from 'neo4j-driver'
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const port: string = process.env.NEO_PORT || "2000";
-const uri: string = process.env.NEO_URI || "test";
-const user: string = process.env.NEO_USER || "default";
-const password: string = process.env.NEO_PASS || "default";
-const driver = neo4j.driver(uri, neo4j.auth.basic(user, password))
+const url = process.env.NEO_URI || "test";
+const user = process.env.NEO_USER || "test";
+const password = process.env.NEO_PASS || "test";
+const driver = neo4j.driver(url, neo4j.auth.basic(user, password))
 const session = driver.session()
 
 const createPlaceQuery : string = ``;
@@ -57,24 +56,24 @@ export const createPerson = async (person: Object): Promise<Object> => {
     await driver.close()
 }
 
-export const createPlace = async (place: Object): Promise<Object> => {
-    try {
-        const result = await session.run(
-            createPlaceQuery,
-            place
-        )
-
-        const singleRecord = result.records[0]
-        const node = singleRecord.get(0)
-        console.log(node.properties.name)
-        return node;
-
-    } catch (e: any) {
-        throw new Error(e);
-    } finally {
-        await session.close()
-    }
-
-// on application exit:
-    await driver.close()
-}
+// export const createPlace = async (place: Object): Promise<Object> => {
+//     try {
+//         const result = await session.run(
+//             createPlaceQuery,
+//             place
+//         )
+//
+//         const singleRecord = result.records[0]
+//         const node = singleRecord.get(0)
+//         console.log(node.properties.name)
+//         return node;
+//
+//     } catch (e: any) {
+//         throw new Error(e);
+//     } finally {
+//         await session.close()
+//     }
+//
+// // on application exit:
+//     await driver.close()
+// }

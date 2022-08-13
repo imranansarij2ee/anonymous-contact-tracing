@@ -3,7 +3,7 @@ import * as UserService from "./controller/user";
 import * as SurveyService from "./controller/survey";
 const router = express.Router()
 
-// middleware that is specific to this router
+
 router.use((req, res, next) => {
     console.log('Time: ', Date.now())
     next()
@@ -26,9 +26,8 @@ router.post('/survey', SurveyService.createSurvey);
 
 
 
-router.get('/survey', (req: Request, res: Response) => {
-
-    res.send('Survey complete')
-});
+// router.get('/survey', (req: Request, res: Response) => {
+//     res.send('Survey complete')
+// });
 
 export default router;

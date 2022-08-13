@@ -2,12 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "places": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/place"
-      }
-    },
     "age": {
       "type": "string",
       "enum": [
@@ -35,6 +29,15 @@
     "channel": {
       "type": "string"
     },
+    "countFriends": {
+      "type": "number"
+    },
+    "countPhysical": {
+      "type": "number"
+    },
+    "countSex": {
+      "type": "number"
+    },
     "covidTestPositive": {
       "type": "string",
       "enum": [
@@ -44,6 +47,15 @@
         "Sí",
         "No me hice la prueba"
       ]
+    },
+    "enterCodeName": {
+      "type": "number"
+    },
+    "enterID": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
     },
     "groupSex": {
       "type": "string"
@@ -80,6 +92,9 @@
         "No sé"
       ]
     },
+    "home": {
+      "type": "string"
+    },
     "mapGroupSex": {
       "type": "string"
     },
@@ -102,6 +117,18 @@
         "No sé"
       ]
     },
+    "overallPrompt": {
+      "type": "string"
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/place"
+      }
+    },
+    "provideIDPrompt": {
+      "type": "string"
+    },
     "raceAPI": {
       "type": "boolean"
     },
@@ -109,6 +136,9 @@
       "type": "boolean"
     },
     "raceLatinx": {
+      "type": "boolean"
+    },
+    "raceMulti": {
       "type": "boolean"
     },
     "raceOther": {
@@ -123,15 +153,15 @@
     "referrerID": {
       "type": "string"
     },
+    "returnParticipant": {
+      "type": "boolean"
+    },
     "sex": {
       "type": "string",
       "enum": [
         "Male",
         "Female",
-        "Other",
-        "Hombre",
-        "Mujer",
-        "Otro"
+        "Other"
       ]
     },
     "sexOrientation": {
@@ -141,10 +171,11 @@
         "Bisexual",
         "Straight",
         "Queer",
-        "Something Else",
-        "Heterosexual",
-        "Otra"
+        "Something Else"
       ]
+    },
+    "sorePenis": {
+      "type": "boolean"
     },
     "symptomBackAche": {
       "type": "boolean"
@@ -217,45 +248,6 @@
     }
   },
   "required": [
-    "age",
-    "anotherPlace",
-    "bestApp",
-    "channel",
-    "covidTestPositive",
-    "groupSex",
-    "hivPrep",
-    "hivStatus",
-    "hivSuppressed",
-    "mapGroupSex",
-    "mapHome",
-    "monkeypoxCare",
-    "monkeypoxTest",
-    "monkeypoxVaccine",
-    "raceAPI",
-    "raceBlack",
-    "raceLatinx",
-    "raceOther",
-    "raceWhite",
-    "referrerEnglish",
-    "referrerID",
-    "sex",
-    "sexOrientation",
-    "symptomBackAche",
-    "symptomBodyRash",
-    "symptomChills",
-    "symptomExhaustion",
-    "symptomFacialRash",
-    "symptomFever",
-    "symptomHeadache",
-    "symptomMouth",
-    "symptomMuscleAche",
-    "symptomOther",
-    "symptomRectalDiscomfort",
-    "symptomSoreThroat",
-    "symptomSoresAnus",
-    "symptomSwollenGlands",
-    "travelTime",
-    "vaccinationDate",
-    "places"
+
   ]
 }

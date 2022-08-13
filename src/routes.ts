@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express, {Request, Response } from 'express';
 import * as UserService from "./controller/user";
 import * as SurveyService from "./controller/survey";
 const router = express.Router()
@@ -16,10 +16,10 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 // user routes
-router.post('/users', UserService.createUser);
-router.get('/users/name/:username', UserService.getUserByUserName);
-router.get('/users/private/:privateId', UserService.getUserByPrivateId);
-router.get('/users/public/:publicId', UserService.getUserByPublicId);
+router.post('/user', UserService.createUser);
+router.get('/user/name/:username', UserService.getUserByUserName);
+router.get('/user/private/:privateId', UserService.getUserByPrivateId);
+router.get('/user/public/:publicId', UserService.getUserByPublicId);
 
 // survey routs
 router.post('/survey', SurveyService.createSurvey);

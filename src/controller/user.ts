@@ -80,7 +80,7 @@ export const getUserByUserName = async (req: Request, res: Response) => {
     const username = req.params.username;
     try {
         if (!username) {
-            new Error("missing username")
+            new Error("missing username");
         }
         const sql = `SELECT *
                      FROM user_info

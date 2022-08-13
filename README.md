@@ -75,7 +75,7 @@ npm run dev;
 ```
 # Enviroment
 
-develop => 
+develop => https://act-develop.herokuapp.com
 
 # API Routes
 
@@ -83,10 +83,15 @@ develop =>
 +--------+---------------------------------------------------------------------+
   Method | URI                     |  Description
 +--------+---------------------------------------------------------------------+
-  POST  | /users                   | generate & return unique username
-  GET   | /users/name/:username    | get user by username
-  GET   | /users/private/:privateId| get user by private id
-  GET   | /users/public/:publicId  | get user by public id
+  POST  | /user                   | generate & return unique username
+  GET   | /user/name/:username    | get user by username
+  GET   | /user/private/:privateId| get user by private id
+  GET   | /user/public/:publicId  | get user by public id
   POST  | /survey                  | accept survey data and persist in neo4j
 +--------+----------------------------------------------------------------------+
+
+https://act-develop.herokuapp.com/user
+https://act-develop.herokuapp.com/user/name
+https://act-develop.herokuapp.com/survey
+
 ```

@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import * as NeoClient from "../database/neo";
 import * as SchemaValidator from "../validator";
+import {Neo4jError} from "neo4j-driver";
 
 export const createSurvey = async (req: Request, res: Response) => {
     const person = req.body;
@@ -17,6 +18,7 @@ export const createSurvey = async (req: Request, res: Response) => {
         const resp = await NeoClient.createPerson(person);
         res.status(200).send(resp);
     } catch (e) {
-        res.status(500).send(e);
+        const neoError = e instanceof Neo4jError ? e.message : e;
+        res.status(500).send({message : neoError});
     }
 };

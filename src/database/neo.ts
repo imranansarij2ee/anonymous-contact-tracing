@@ -9,7 +9,6 @@ const password = process.env.NEO_PASS || "test";
 const driver = neo4j.driver(url, neo4j.auth.basic(user, password))
 const session = driver.session()
 
-const createPlaceQuery: string = ``;
 
 const createPersonQuery: string = `CREATE (a:Person { age: $age ,
 anotherPlace: $anotherPlace ,bestApp: $bestApp ,
@@ -31,9 +30,38 @@ symptomSoresAnus: $symptomSoresAnus, symptomSwollenGlands: $symptomSwollenGlands
 travelTime: $travelTime ,vaccinationDate: $vaccinationDate 
 }) RETURN a`;
 
-// const createPersonQuery : string = `CREATE (a:Person { age : $age , anotherPlace : $anotherPlace ,
-//             bestApp : $bestApp, channel: $channel,
-//             covidTestPositive: $covidTestPositive }) RETURN a`
+const personPlaceRelationQuery = `MATCH
+  (a:Person),
+  (p:Place)
+WHERE a.name = 'A' AND p.censusTract = 'B'
+CREATE (a)-[r:RELTYPE {name: a.name + '<->' + b.name}]->(b)
+RETURN type(r), r.name`
+
+const createPlaceQuery: string = `CREATE (p:Place { censusTract : $censusTract , placeSex : $placeSex ,
+            placeType : $placeType }) RETURN p`;
+
+// const runCypherWithArgument= async (cypher : string, arg : Object): Promise<Object> =>{
+//     try {
+//         const result = await session.run(
+//             cypher,
+//             arg
+//         )
+//
+//         const singleRecord = result.records[0]
+//         const node = singleRecord.get(0)
+//         console.log(node.properties.name)
+//         return node;
+//
+//     } catch (e) {
+//         throw e;
+//     } finally {
+//         await session.close();
+//     }
+//
+// // on application exit:
+//     await driver.close()
+// }
+
 
 export const createPerson = async (person: Object): Promise<Object> => {
     try {
@@ -57,24 +85,25 @@ export const createPerson = async (person: Object): Promise<Object> => {
     await driver.close()
 }
 
-// export const createPlace = async (place: Object): Promise<Object> => {
-//     try {
-//         const result = await session.run(
-//             createPlaceQuery,
-//             place
-//         )
-//
-//         const singleRecord = result.records[0]
-//         const node = singleRecord.get(0)
-//         console.log(node.properties.name)
-//         return node;
-//
-//     } catch (e: any) {
-//         throw new Error(e);
-//     } finally {
-//         await session.close()
-//     }
-//
-// // on application exit:
-//     await driver.close()
-// }
+
+export const createPlace = async (place: Object): Promise<Object> => {
+    try {
+        const result = await session.run(
+            createPlaceQuery,
+            place
+        )
+
+        const singleRecord = result.records[0]
+        const node = singleRecord.get(0)
+        console.log(node.properties.name)
+        return node;
+
+    } catch (e: any) {
+        throw new Error(e);
+    } finally {
+        await session.close()
+    }
+
+    await driver.close()
+}
+

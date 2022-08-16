@@ -14,7 +14,7 @@
         "65+"
       ]
     },
-    "anotherPlace": {
+    "anotherQuestion": {
       "type": "string"
     },
     "bestApp": {
@@ -35,12 +35,6 @@
     "covidTestPositive": {
       "type": "string"
     },
-    "enterCodeName": {
-      "type": "string"
-    },
-    "enterID": {
-      "type": "string"
-    },
     "gender": {
       "type": "string"
     },
@@ -56,13 +50,7 @@
     "hivSuppressed": {
       "type": "string"
     },
-    "home": {
-      "type": "string"
-    },
-    "mapGroupSex": {
-      "type": "string"
-    },
-    "mapHome": {
+    "homeCensusTract": {
       "type": "string"
     },
     "monkeypoxCare": {
@@ -73,16 +61,6 @@
     },
     "monkeypoxVaccine": {
       "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
-    },
-    "overallPrompt": {
-      "type": "string"
     },
     "places": {
       "type": "array",
@@ -90,7 +68,7 @@
         "$ref": "#/definitions/place"
       }
     },
-    "provideIDPrompt": {
+    "publicID": {
       "type": "string"
     },
     "raceAPI": {
@@ -118,27 +96,15 @@
       "type": "string"
     },
     "returnParticipant": {
-      "type": "boolean"
+      "type": "string"
     },
     "sex": {
-      "type": "string",
-      "enum": [
-        "Male",
-        "Female",
-        "Other"
-      ]
+      "type": "string"
     },
     "sexOrientation": {
-      "type": "string",
-      "enum": [
-        "Gay",
-        "Bisexual",
-        "Straight",
-        "Queer",
-        "Something Else"
-      ]
+      "type": "string"
     },
-    "sorePenis": {
+    "symptomSorePenis": {
       "type": "boolean"
     },
     "symptomBackAche": {

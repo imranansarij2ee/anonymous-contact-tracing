@@ -27,7 +27,8 @@ symptomHeadache: $symptomHeadache ,symptomMouth: $symptomMouth ,
 symptomMuscleAche: $symptomMuscleAche ,symptomOther: $symptomOther,
 symptomRectalDiscomfort: $symptomRectalDiscomfort ,symptomSoreThroat: $symptomSoreThroat ,
 symptomSoresAnus: $symptomSoresAnus, symptomSwollenGlands: $symptomSwollenGlands ,
-travelTime: $travelTime ,vaccinationDate: $vaccinationDate 
+travelTime: $travelTime ,userName: $userName,
+vaccinationDate: $vaccinationDate 
 }) RETURN a`;
 
 const personPlaceRelationQuery = `MATCH

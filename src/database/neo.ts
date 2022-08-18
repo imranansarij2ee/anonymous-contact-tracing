@@ -12,7 +12,6 @@ import {
     sexWithRelationCypher,
     hangoutWithRelationCypher
 } from '../lib/constant'
-import {isNumber} from "util";
 
 dotenv.config();
 
@@ -22,7 +21,6 @@ const password = process.env.NEO_PASS || "test";
 const driver = neo4j.driver(url, neo4j.auth.basic(user, password));
 
 export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
-    const {places, homeCensusTract} = survey;
     // get private_id and set it on survey
     const privateId = await SqlClient.getUserPrivateId(survey.publicID);
     if(privateId === null){

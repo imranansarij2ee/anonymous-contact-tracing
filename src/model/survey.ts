@@ -1,0 +1,55 @@
+import Place from "./place";
+
+export default interface Survey {
+    age: string;
+    bestApp: string;
+    "channel": string;
+    "countFriends": string;
+    "countPhysical": string;
+    "countSex": string;
+    "covidTestPositive": string;
+    "gender": string;
+    "groupSex": string;
+    "hivPrep": string;
+    "hivStatus": string;
+    "hivSuppressed": string;
+    "homeCensusTract": string;
+    "mapGroupSex": string;
+    "monkeypoxCare": string;
+    "monkeypoxTest": string;
+    "monkeypoxVaccine": string;
+    "places": Array<Place>,
+    "publicID": string;
+    "raceAsian" :boolean;
+    "racePacific":boolean;
+    "raceBlack": boolean;
+    "raceLatinx": boolean;
+    "raceOther": boolean;
+    "anotherQuestion": string;
+    "raceWhite": boolean;
+    "referrerEnglish": boolean;
+    "referrerID": string;
+    "referralType": number;
+    "returnParticipant": string;
+    "sex": string;
+    "sexOrientation": string;
+    "symptomSorePenis": boolean;
+    "symptomBackAche": boolean;
+    "symptomBodyRash": boolean;
+    "symptomChills": boolean;
+    "symptomExhaustion": boolean;
+    "symptomFacialRash": boolean;
+    "symptomFever": boolean;
+    "symptomHeadache": boolean;
+    "symptomMouth": boolean;
+    "symptomMuscleAche": boolean;
+    "symptomOther": boolean;
+    "symptomRectalDiscomfort": boolean;
+    "symptomSoreThroat": boolean;
+    "symptomSoresAnus": boolean;
+    "symptomSwollenGlands": boolean;
+    "travelTime": number;
+    "vaccinationDate": string;
+    "userName": string;
+    "userId":string;
+}

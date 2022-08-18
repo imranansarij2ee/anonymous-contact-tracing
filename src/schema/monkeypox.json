@@ -14,7 +14,7 @@
         "65+"
       ]
     },
-    "anotherPlace": {
+    "anotherQuestion": {
       "type": "string"
     },
     "bestApp": {
@@ -35,9 +35,6 @@
     "covidTestPositive": {
       "type": "string"
     },
-    "enterCodeName": {
-      "type": "string"
-    },
     "enterID": {
       "type": "string"
     },
@@ -56,13 +53,7 @@
     "hivSuppressed": {
       "type": "string"
     },
-    "home": {
-      "type": "string"
-    },
-    "mapGroupSex": {
-      "type": "string"
-    },
-    "mapHome": {
+    "homeCensusTract": {
       "type": "string"
     },
     "monkeypoxCare": {
@@ -72,16 +63,6 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
-    },
-    "overallPrompt": {
       "type": "string"
     },
     "places": {
@@ -90,10 +71,10 @@
         "$ref": "#/definitions/place"
       }
     },
-    "provideIDPrompt": {
+    "publicID": {
       "type": "string"
     },
-    "raceAPI": {
+    "raceAsian": {
       "type": "boolean"
     },
     "raceBlack": {
@@ -102,7 +83,7 @@
     "raceLatinx": {
       "type": "boolean"
     },
-    "raceMulti": {
+    "racePacific": {
       "type": "boolean"
     },
     "raceOther": {
@@ -117,28 +98,24 @@
     "referrerID": {
       "type": "string"
     },
+    "referralType": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2
+      ]
+    },
     "returnParticipant": {
-      "type": "boolean"
+      "type": "string"
     },
     "sex": {
-      "type": "string",
-      "enum": [
-        "Male",
-        "Female",
-        "Other"
-      ]
+      "type": "string"
     },
     "sexOrientation": {
-      "type": "string",
-      "enum": [
-        "Gay",
-        "Bisexual",
-        "Straight",
-        "Queer",
-        "Something Else"
-      ]
+      "type": "string"
     },
-    "sorePenis": {
+    "symptomSorePenis": {
       "type": "boolean"
     },
     "symptomBackAche": {
@@ -184,6 +161,12 @@
       "type": "boolean"
     },
     "travelTime": {
+      "type": "number"
+    },
+    "publicID": {
+      "type": "string"
+    },
+    "userName": {
       "type": "string"
     },
     "vaccinationDate": {

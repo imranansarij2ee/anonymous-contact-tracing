@@ -1,26 +1,7 @@
 import {Request, Response} from 'express';
 import {findUser, generateUser} from "../database/sql";
+import User from "../model/user";
 
-interface IUser {
-    user_name: string;
-    public_id: string;
-}
-
-export class User {
-    user: IUser;
-
-    constructor(user: IUser) {
-        this.user = user;
-    }
-
-    getUserName(): string {
-        return this.user.user_name;
-    }
-
-    getPublicId(): string {
-        return this.user.public_id;
-    }
-}
 
 // Get user
 export const createUser = async (req: Request, res: Response) => {
@@ -59,7 +40,7 @@ export const getUserByPrivateId = async (req: Request, res: Response) => {
     const id = req.params.privateId;
     try {
         if (!id) {
-            new Error("missing id")
+            res.status(400).send({message: "missing user_id"});
         }
         const sql = `SELECT *
                      FROM user_info

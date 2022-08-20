@@ -35,6 +35,10 @@
     "covidTestPositive": {
       "type": "string"
     },
+
+    "enterID": {
+      "type": "string"
+    },
     "gender": {
       "type": "string"
     },
@@ -60,6 +64,9 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
+
+      "type": "string"
+
       "type": "string",
     },
     "places": {
@@ -71,7 +78,7 @@
     "publicID": {
       "type": "string"
     },
-    "raceAPI": {
+    "raceAsian": {
       "type": "boolean"
     },
     "raceBlack": {
@@ -80,7 +87,7 @@
     "raceLatinx": {
       "type": "boolean"
     },
-    "raceMulti": {
+    "racePacific": {
       "type": "boolean"
     },
     "raceOther": {
@@ -94,6 +101,14 @@
     },
     "referrerID": {
       "type": "string"
+    },
+    "referralType": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2
+      ]
     },
     "returnParticipant": {
       "type": "string"
@@ -150,6 +165,12 @@
       "type": "boolean"
     },
     "travelTime": {
+      "type": "number"
+    },
+    "publicID": {
+      "type": "string"
+    },
+    "userName": {
       "type": "string"
     },
     "username": {

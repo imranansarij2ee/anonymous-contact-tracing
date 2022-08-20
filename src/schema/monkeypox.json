@@ -35,6 +35,7 @@
     "covidTestPositive": {
       "type": "string"
     },
+
     "enterID": {
       "type": "string"
     },
@@ -63,7 +64,10 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
+
       "type": "string"
+
+      "type": "string",
     },
     "places": {
       "type": "array",
@@ -167,6 +171,9 @@
       "type": "string"
     },
     "userName": {
+      "type": "string"
+    },
+    "username": {
       "type": "string"
     },
     "vaccinationDate": {

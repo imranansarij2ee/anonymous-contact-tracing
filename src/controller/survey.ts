@@ -18,9 +18,11 @@ export const createSurvey = async (req: Request, res: Response) => {
         }
         console.log(JSON.stringify(survey));
         const resp = await NeoClient.createSurveyEntry(survey);
+        console.log("response from neo4j server", resp)
         res.status(200).send(resp);
     } catch (e) {
         const neoError = e instanceof Neo4jError ? e.message : e;
         res.status(500).send({message : neoError});
+        console.log(e)
     }
 };

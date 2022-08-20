@@ -18,19 +18,19 @@
       "type": "string"
     },
     "bestApp": {
-      "type": "string"
+      "type": "array"
     },
     "channel": {
       "type": "string"
     },
     "countFriends": {
-      "type": "string"
+      "type": "integer"
     },
     "countPhysical": {
-      "type": "string"
+      "type": "integer"
     },
     "countSex": {
-      "type": "string"
+      "type": "integer"
     },
     "covidTestPositive": {
       "type": "string"
@@ -64,9 +64,6 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
-
-      "type": "string"
-
       "type": "string",
     },
     "places": {
@@ -103,12 +100,7 @@
       "type": "string"
     },
     "referralType": {
-      "type": "integer",
-      "enum": [
-        0,
-        1,
-        2
-      ]
+      "type": "string",
     },
     "returnParticipant": {
       "type": "string"

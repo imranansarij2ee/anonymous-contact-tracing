@@ -1,0 +1,70 @@
+{
+ "age": "35-44",
+ "anotherQuestion": "",
+ "bestApp": "",
+ "channel": "",
+ "countFriends": 4,
+ "countPhysical": 3,
+ "countSex": 2,
+ "covidTestPositive": "yes",
+ "gender": "man",
+ "groupSex": "yes",
+ "hivPrep": "yes",
+ "hivStatus": "unsure",
+ "hivSuppressed": "",
+ "homeCensusTract": "36061005200",
+ "monkeypoxCare": "no",
+ "monkeypoxTest": "yes",
+ "monkeypoxVaccine": "yes",
+ "places": [
+  {
+   "placeType": "something-else",
+   "placeSex": "yes",
+   "censusTract": "36061005800"
+  },
+  {
+   "placeType": "sex-party",
+   "placeSex": "yes",
+   "censusTract": "36061020300"
+  },
+  {
+   "placeType": "dance-party",
+   "placeSex": "i-don't-remember",
+   "censusTract": "36005006500"
+  },
+  {
+   "placeType": "darkroom",
+   "placeSex": "yes",
+   "censusTract": "36081005500"
+  }
+ ],
+ "raceAsian": true,
+ "raceBlack": true,
+ "raceLatinx": false,
+ "raceOther": true,
+ "racePacific": true,
+ "raceWhite": false,
+ "referrerEnglish": false,
+ "referrerID": "",
+ "referralType": 0,
+ "returnParticipant": "no",
+ "sex": "other",
+ "sexOrientation": "gay",
+ "symptomBackAche": true,
+ "symptomBodyRash": true,
+ "symptomChills": true,
+ "symptomExhaustion": true,
+ "symptomFacialRash": true,
+ "symptomFever": true,
+ "symptomHeadache": true,
+ "symptomMouth": true,
+ "symptomMuscleAche": true,
+ "symptomOther": true,
+ "symptomRectalDiscomfort": true,
+ "symptomSorePenis": true,
+ "symptomSoreThroat": true,
+ "symptomSoresAnus": true,
+ "symptomSwollenGlands": true,
+ "travelTime": 120,
+ "vaccinationDate": "Mon Aug 01 2022 00:00:00 GMT-0400 (Eastern Daylight Time)"
+}

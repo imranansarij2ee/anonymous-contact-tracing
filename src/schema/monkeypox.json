@@ -2,12 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "places": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/place"
-      }
-    },
     "age": {
       "type": "string",
       "enum": [
@@ -20,70 +14,47 @@
         "65+"
       ]
     },
-    "anotherPlace": {
-      "type": "string",
-      "enum": [
-        "Yes – Add place",
-        "No – Done adding places",
-        "Sí – Agrega el lugar",
-        "No – Terminé de agregar lugares"
-      ]
+    "anotherQuestion": {
+      "type": "string"
     },
     "bestApp": {
-      "type": "string"
+      "type": "array"
     },
     "channel": {
       "type": "string"
     },
+    "countFriends": {
+      "type": "integer"
+    },
+    "countPhysical": {
+      "type": "integer"
+    },
+    "countSex": {
+      "type": "integer"
+    },
     "covidTestPositive": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Did not test",
-        "Sí",
-        "No me hice la prueba"
-      ]
+      "type": "string"
+    },
+
+    "enterID": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
     },
     "groupSex": {
       "type": "string"
     },
     "hivPrep": {
-      "type": "string",
-      "enum": [
-        "Living with HIV",
-        "Not living with HIV",
-        "Unsure",
-        "Vivo con VIH",
-        "No vivo con VIH",
-        "No sé"
-      ]
-    },
-    "hivStatus": {
-      "type": "string",
-      "enum": [
-        "Living with HIV",
-        "Not living with HIV",
-        "Unsure",
-        "Vivo con VIH",
-        "No vivo con VIH",
-        "No sé"
-      ]
-    },
-    "hivSuppressed": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
-    },
-    "mapGroupSex": {
       "type": "string"
     },
-    "mapHome": {
+    "hivStatus": {
+      "type": "string"
+    },
+    "hivSuppressed": {
+      "type": "string"
+    },
+    "homeCensusTract": {
       "type": "string"
     },
     "monkeypoxCare": {
@@ -94,21 +65,26 @@
     },
     "monkeypoxVaccine": {
       "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
     },
-    "raceAPI": {
+    "places": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/place"
+      }
+    },
+    "publicID": {
+      "type": "string"
+    },
+    "raceAsian": {
       "type": "boolean"
     },
     "raceBlack": {
       "type": "boolean"
     },
     "raceLatinx": {
+      "type": "boolean"
+    },
+    "racePacific": {
       "type": "boolean"
     },
     "raceOther": {
@@ -123,28 +99,20 @@
     "referrerID": {
       "type": "string"
     },
-    "sex": {
+    "referralType": {
       "type": "string",
-      "enum": [
-        "Male",
-        "Female",
-        "Other",
-        "Hombre",
-        "Mujer",
-        "Otro"
-      ]
+    },
+    "returnParticipant": {
+      "type": "string"
+    },
+    "sex": {
+      "type": "string"
     },
     "sexOrientation": {
-      "type": "string",
-      "enum": [
-        "Gay",
-        "Bisexual",
-        "Straight",
-        "Queer",
-        "Something Else",
-        "Heterosexual",
-        "Otra"
-      ]
+      "type": "string"
+    },
+    "symptomSorePenis": {
+      "type": "boolean"
     },
     "symptomBackAche": {
       "type": "boolean"
@@ -189,6 +157,15 @@
       "type": "boolean"
     },
     "travelTime": {
+      "type": "number"
+    },
+    "publicID": {
+      "type": "string"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "username": {
       "type": "string"
     },
     "vaccinationDate": {
@@ -217,45 +194,5 @@
     }
   },
   "required": [
-    "age",
-    "anotherPlace",
-    "bestApp",
-    "channel",
-    "covidTestPositive",
-    "groupSex",
-    "hivPrep",
-    "hivStatus",
-    "hivSuppressed",
-    "mapGroupSex",
-    "mapHome",
-    "monkeypoxCare",
-    "monkeypoxTest",
-    "monkeypoxVaccine",
-    "raceAPI",
-    "raceBlack",
-    "raceLatinx",
-    "raceOther",
-    "raceWhite",
-    "referrerEnglish",
-    "referrerID",
-    "sex",
-    "sexOrientation",
-    "symptomBackAche",
-    "symptomBodyRash",
-    "symptomChills",
-    "symptomExhaustion",
-    "symptomFacialRash",
-    "symptomFever",
-    "symptomHeadache",
-    "symptomMouth",
-    "symptomMuscleAche",
-    "symptomOther",
-    "symptomRectalDiscomfort",
-    "symptomSoreThroat",
-    "symptomSoresAnus",
-    "symptomSwollenGlands",
-    "travelTime",
-    "vaccinationDate",
-    "places"
   ]
 }

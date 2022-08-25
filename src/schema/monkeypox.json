@@ -76,7 +76,8 @@
       }
     },
     "publicID": {
-      "type": "string"
+      "type": "string",
+      "format": "uuid"
     },
     "raceAsian": {
       "type": "boolean"

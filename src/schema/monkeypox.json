@@ -174,9 +174,6 @@
     "userName": {
       "type": "string"
     },
-    "username": {
-      "type": "string"
-    },
     "vaccinationDate": {
       "type": "string"
     }

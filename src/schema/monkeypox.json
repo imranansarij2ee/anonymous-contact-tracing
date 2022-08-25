@@ -58,7 +58,7 @@
       "type": "string"
     },
     "homeCensusTract": {
-      "$ref": "#/definitions/place"
+      "type": "string"
     },
     "monkeypoxCare": {
       "type": "string"
@@ -104,7 +104,7 @@
       "minLength": 0
     },
     "referralType": {
-      "type": "integer",
+      "type": "number",
       "enum": [
         null,
         0,

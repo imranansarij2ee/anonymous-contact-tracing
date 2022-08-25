@@ -93,7 +93,7 @@ export const createReferralRelation = async (survey: Survey): Promise<void> => {
 export const createRelation = async (survey: Survey): Promise<void> => {
     const timeStamp = Date.now().toString();
     const userId = survey.userId;
-    const censusTractId = survey.homeCensusTract.censusTract;
+    const censusTractId = survey.homeCensusTract;
 
     const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId}) => {
         return {placeSex, placeType, userId, censusTractId, timeStamp};

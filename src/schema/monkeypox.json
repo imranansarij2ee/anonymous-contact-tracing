@@ -67,10 +67,7 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
-
       "type": "string"
-
-      "type": "string",
     },
     "places": {
       "type": "array",

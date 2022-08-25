@@ -32,17 +32,20 @@ SET r.createdAt=$timeStamp`;
 export const friendWithRelationCypher: string = `MATCH (a:Person {userId:$userId  })
 MATCH (b:Person {userId : $referrerID })
 CREATE (a)-[r:FRIENDS_WITH]->(b)
-SET r.createdAt=$timeStamp`;
+SET r.createdAt=$timeStamp
+SET a.referralType=$referralType`;
 
 export const hangoutWithRelationCypher: string = `MATCH (a:Person {userId:$userId  })
 MATCH (b:Person {userId : $referrerID })
 CREATE (a)-[r:HANGOUT_WITH]->(b)
-SET r.createdAt=$timeStamp`;
+SET r.createdAt=$timeStamp
+SET a.referralType=$referralType`;
 
 export const sexWithRelationCypher: string = `MATCH (a:Person {userId:$userId  })
 MATCH (b:Person {userId : $referrerID })
 CREATE (a)-[r:HAD_SEX_WITH]->(b)
-SET r.createdAt=$timeStamp`;
+SET r.createdAt=$timeStamp
+SET a.referralType=$referralType`;
 
 export const createAndMergeCensusTractQuery: string = `MERGE (c:CensusTract { identifier : $censusTract }) RETURN c`;
 

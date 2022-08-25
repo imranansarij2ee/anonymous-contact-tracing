@@ -16,7 +16,6 @@ export const createSurvey = async (req: Request, res: Response) => {
             });
             return;
         }
-        console.log(JSON.stringify(survey));
         const resp = await NeoClient.createSurveyEntry(survey);
         res.status(200).send(resp);
     } catch (e) {

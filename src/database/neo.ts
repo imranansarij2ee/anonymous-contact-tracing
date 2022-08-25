@@ -29,9 +29,10 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
     }
     survey.userId = privateId;
     let referralTypeValue: any;
-    referralTypeValue = referralTypeMapping.get(survey.referralType);
-    const session = driver.session();
+    referralTypeValue = isEmpty(survey.referrerID) ? "NONE" : referralTypeMapping.get(survey.referralType);
     const surveyArgs = {...survey, referralTypeValue};
+    const session = driver.session();
+
     try {
         const result = await session.run(
             createSurveyCypher,
@@ -64,7 +65,7 @@ export const createReferralRelation = async (survey : Survey): Promise<void> => 
     let referralTypeValue: any;
     let referralCypher =null;
     referralTypeValue = referralTypeMapping.get(survey.referralType);
-    let referralArgs = {referrerID:referringUser, userId : surveyUser, timeStamp};
+    let referralArgs = {referrerID:referringUser, userId : surveyUser, timeStamp, referralType:referralTypeValue };
     const referralType = survey.referralType;
     switch (referralType){
         case 0:
@@ -110,7 +111,6 @@ export const createRelation = async (survey:Survey): Promise<void> => {
     }
     const refereePrivateId = await SqlClient.getUserPrivateId(survey.referrerID);
     let referralCypher =null;
-    let referralArgs = {referrerID:refereePrivateId, userId, timeStamp};
     const referralType = survey.referralType;
     switch (referralType){
         case 0:
@@ -127,6 +127,8 @@ export const createRelation = async (survey:Survey): Promise<void> => {
             return ;
     }
 
+    const referralTypeValue = referralTypeMapping.get(referralType);
+    let referralArgs = {referrerID:refereePrivateId, userId, timeStamp, referralType:referralTypeValue };
     if(referralCypher !== null){
         await runRelationCypher(referralCypher, referralArgs);
     }
@@ -139,7 +141,6 @@ const runRelationCypher = async (cypher: string, args: Object): Promise<void> =>
             cypher,
             args
         )
-        console.log(JSON.stringify(resp));
     } catch (e: any) {
         throw new Error(e);
     } finally {

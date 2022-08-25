@@ -1,17 +1,16 @@
 import * as neo4j from 'neo4j-driver'
 import * as dotenv from 'dotenv';
 import Survey from '../model/survey'
-import {referralTypeMapping} from '../lib/constant'
-import * as SqlClient from '../database/sql'
 import {
-    createAndMergeCensusTractQuery,
     createSurveyCypher,
-    groupSexRelationCypher,
-    livesInRelationCypher,
     friendWithRelationCypher,
-    sexWithRelationCypher,
-    hangoutWithRelationCypher
+    groupSexRelationCypher,
+    hangoutWithRelationCypher,
+    livesInRelationCypher,
+    referralTypeMapping,
+    sexWithRelationCypher
 } from '../lib/constant'
+import * as SqlClient from '../database/sql'
 import {isEmpty} from "../lib/helper";
 
 dotenv.config();
@@ -24,7 +23,7 @@ const driver = neo4j.driver(url, neo4j.auth.basic(user, password));
 export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
     // get private_id and set it on survey
     const privateId = await SqlClient.getUserPrivateId(survey.publicID);
-    if(privateId === null){
+    if (privateId === null) {
         throw new Error("user private id not found");
     }
     survey.userId = privateId;
@@ -54,20 +53,20 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
 
 }
 
-export const createReferralRelation = async (survey : Survey): Promise<void> => {
+export const createReferralRelation = async (survey: Survey): Promise<void> => {
 
-    if(isEmpty(survey.referrerID) || isEmpty(survey.publicID)){
-        return ;
+    if (isEmpty(survey.referrerID) || isEmpty(survey.publicID)) {
+        return;
     }
     const surveyUser = await SqlClient.getUserPrivateId(survey.publicID);
     const referringUser = await SqlClient.getUserPrivateId(survey.referrerID);
-    const timeStamp =  Date.now().toString();
+    const timeStamp = Date.now().toString();
     let referralTypeValue: any;
-    let referralCypher =null;
+    let referralCypher = null;
     referralTypeValue = referralTypeMapping.get(survey.referralType);
-    let referralArgs = {referrerID:referringUser, userId : surveyUser, timeStamp, referralType:referralTypeValue };
+    let referralArgs = {referrerID: referringUser, userId: surveyUser, timeStamp, referralType: referralTypeValue};
     const referralType = survey.referralType;
-    switch (referralType){
+    switch (referralType) {
         case 0:
             referralCypher = friendWithRelationCypher;
             break;
@@ -82,7 +81,7 @@ export const createReferralRelation = async (survey : Survey): Promise<void> => 
             return;
 
     }
-    if(referralCypher == null){
+    if (referralCypher == null) {
         return;
     }
 
@@ -91,7 +90,7 @@ export const createReferralRelation = async (survey : Survey): Promise<void> => 
 }
 
 // privateId, homeCensusTract, places
-export const createRelation = async (survey:Survey): Promise<void> => {
+export const createRelation = async (survey: Survey): Promise<void> => {
     const timeStamp = Date.now().toString();
     const userId = survey.userId;
     const censusTractId = survey.homeCensusTract.censusTract;
@@ -106,13 +105,13 @@ export const createRelation = async (survey:Survey): Promise<void> => {
     for (const arg of groupSexArgs) {
         await runRelationCypher(groupSexRelationCypher, arg);
     }
-    if(isEmpty(survey.referrerID)){
-        return ;
+    if (isEmpty(survey.referrerID)) {
+        return;
     }
     const refereePrivateId = await SqlClient.getUserPrivateId(survey.referrerID);
-    let referralCypher =null;
+    let referralCypher = null;
     const referralType = survey.referralType;
-    switch (referralType){
+    switch (referralType) {
         case 0:
             referralCypher = friendWithRelationCypher;
             break;
@@ -124,12 +123,12 @@ export const createRelation = async (survey:Survey): Promise<void> => {
             break;
         default:
             console.log("referralType mapping not found");
-            return ;
+            return;
     }
 
     const referralTypeValue = referralTypeMapping.get(referralType);
-    let referralArgs = {referrerID:refereePrivateId, userId, timeStamp, referralType:referralTypeValue };
-    if(referralCypher !== null){
+    let referralArgs = {referrerID: refereePrivateId, userId, timeStamp, referralType: referralTypeValue};
+    if (referralCypher !== null) {
         await runRelationCypher(referralCypher, referralArgs);
     }
 }
@@ -137,12 +136,12 @@ export const createRelation = async (survey:Survey): Promise<void> => {
 const runRelationCypher = async (cypher: string, args: Object): Promise<void> => {
     const session = driver.session();
     try {
-    const resp =     await session.run(
+        const resp = await session.run(
             cypher,
             args
         )
     } catch (e: any) {
-        throw new Error(e);
+        throw e;
     } finally {
         await session.close()
     }

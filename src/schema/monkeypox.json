@@ -171,10 +171,6 @@
     "travelTime": {
       "type": "number"
     },
-    "publicID": {
-      "type": "string",
-      "format": "uuid"
-    },
     "userName": {
       "type": "string"
     },

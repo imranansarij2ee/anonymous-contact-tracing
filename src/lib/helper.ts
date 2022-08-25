@@ -8,3 +8,16 @@ export function generateUserName(): string {
     };
     return uniqueNamesGenerator(customConfig);
 }
+
+export function isEmpty(obj: any): boolean {
+    for (const prop in obj) {
+        if (obj.hasOwnProperty(prop))
+            return false;
+    }
+    return true;
+}
+
+export default function isValidUUID(id : string) {
+    const pattern : RegExp = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
+    return !!pattern && pattern.test(id);
+}

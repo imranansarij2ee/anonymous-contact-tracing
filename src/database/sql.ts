@@ -1,7 +1,7 @@
 import {Pool} from 'pg';
 import {v4} from 'uuid';
 import User from '../model/user';
-import {generateUserName} from '../lib/helper';
+import {generateUserName, isEmpty} from '../lib/helper';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -22,7 +22,6 @@ const pool = new Pool({
 });
 
 async function checkIfNameExist(username: string): Promise<boolean> {
-
     const sql = `SELECT *
                  FROM user_info
                  WHERE user_name = '${username}'`;
@@ -45,6 +44,9 @@ export async function findUser(sql: string): Promise<User> {
 }
 
 export async function getUserPrivateId(publicId: string): Promise<string> {
+    if(isEmpty(publicId)){
+        throw new Error("public id is empty");
+    }
     const sql = `SELECT private_id
                  FROM user_info
                  WHERE public_id = '${publicId}'`;

@@ -12,6 +12,7 @@ import {
     sexWithRelationCypher,
     hangoutWithRelationCypher
 } from '../lib/constant'
+import {isEmpty} from "../lib/helper";
 
 dotenv.config();
 
@@ -52,29 +53,47 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
 
 }
 
-export const createCensusTract = async (censusTract: String) => {
-    const session = driver.session();
-    try {
-        const result = await session.run(
-            createAndMergeCensusTractQuery,
-            {censusTract}
-        );
-        const singleRecord = result.records[0];
-        const node = singleRecord.get(0);
-        return node;
+export const createReferralRelation = async (survey : Survey): Promise<void> => {
 
-    } catch (e: any) {
-        throw new Error(e);
-    } finally {
-        await session.close()
+    if(isEmpty(survey.referrerID) || isEmpty(survey.publicID)){
+        return ;
     }
+    const surveyUser = await SqlClient.getUserPrivateId(survey.publicID);
+    const referringUser = await SqlClient.getUserPrivateId(survey.referrerID);
+    const timeStamp =  Date.now().toString();
+    let referralTypeValue: any;
+    let referralCypher =null;
+    referralTypeValue = referralTypeMapping.get(survey.referralType);
+    let referralArgs = {referrerID:referringUser, userId : surveyUser, timeStamp};
+    const referralType = survey.referralType;
+    switch (referralType){
+        case 0:
+            referralCypher = friendWithRelationCypher;
+            break;
+        case 1:
+            referralCypher = hangoutWithRelationCypher;
+            break;
+        case 2:
+            referralCypher = sexWithRelationCypher;
+            break;
+        default:
+            console.log("referralType mapping not found");
+            return;
+
+    }
+    if(referralCypher == null){
+        return;
+    }
+
+    await runRelationCypher(referralCypher, referralArgs);
+
 }
 
 // privateId, homeCensusTract, places
 export const createRelation = async (survey:Survey): Promise<void> => {
-    const timeStamp = Date.now();
+    const timeStamp = Date.now().toString();
     const userId = survey.userId;
-    const censusTractId = survey.homeCensusTract;
+    const censusTractId = survey.homeCensusTract.censusTract;
 
     const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId}) => {
         return {placeSex, placeType, userId, censusTractId, timeStamp};
@@ -86,7 +105,9 @@ export const createRelation = async (survey:Survey): Promise<void> => {
     for (const arg of groupSexArgs) {
         await runRelationCypher(groupSexRelationCypher, arg);
     }
-
+    if(isEmpty(survey.referrerID)){
+        return ;
+    }
     const refereePrivateId = await SqlClient.getUserPrivateId(survey.referrerID);
     let referralCypher =null;
     let referralArgs = {referrerID:refereePrivateId, userId, timeStamp};
@@ -103,27 +124,13 @@ export const createRelation = async (survey:Survey): Promise<void> => {
             break;
         default:
             console.log("referralType mapping not found");
-            break;
-
+            return ;
     }
 
     if(referralCypher !== null){
         await runRelationCypher(referralCypher, referralArgs);
     }
 }
-
-// export const createRelation = async (userId: String, home: String, places: Array<Place>): Promise<void> => {
-//     const timeStamp = Date.now();
-//     const groupSexArgs = places.map(({placeSex, placeType, censusTract: censusTractId}) => {
-//         return {placeSex, placeType, userId, censusTractId, timeStamp};
-//     });
-//     const liveInArgs = {userId, censusTractId: home, timeStamp};
-//     await runRelationCypher(livesInRelationCypher, liveInArgs);
-//
-//     for (const arg of groupSexArgs) {
-//         await runRelationCypher(groupSexRelationCypher, arg);
-//     }
-// }
 
 const runRelationCypher = async (cypher: string, args: Object): Promise<void> => {
     const session = driver.session();

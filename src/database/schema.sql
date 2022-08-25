@@ -26,3 +26,6 @@ FOR (p:Person) REQUIRE p.userId IS UNIQUE
 CREATE CONSTRAINT [unique_census_tract_identifier] [IF NOT EXISTS]
 FOR (c:CensusTract) REQUIRE c.identifier IS UNIQUE
 
+MATCH (n)
+DETACH DELETE n
+

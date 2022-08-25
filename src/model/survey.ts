@@ -2,18 +2,18 @@ import Place from "./place";
 
 export default interface Survey {
     age: string;
-    bestApp: string;
+    bestApp: Array<string>;
     "channel": string;
-    "countFriends": string;
-    "countPhysical": string;
-    "countSex": string;
+    "countFriends": number;
+    "countPhysical": number;
+    "countSex": number;
     "covidTestPositive": string;
     "gender": string;
     "groupSex": string;
     "hivPrep": string;
     "hivStatus": string;
     "hivSuppressed": string;
-    "homeCensusTract": string;
+    "homeCensusTract": Place;
     "mapGroupSex": string;
     "monkeypoxCare": string;
     "monkeypoxTest": string;

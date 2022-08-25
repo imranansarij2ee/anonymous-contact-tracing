@@ -18,19 +18,22 @@
       "type": "string"
     },
     "bestApp": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "channel": {
       "type": "string"
     },
     "countFriends": {
-      "type": "string"
+      "type": "number"
     },
     "countPhysical": {
-      "type": "string"
+      "type": "number"
     },
     "countSex": {
-      "type": "string"
+      "type": "number"
     },
     "covidTestPositive": {
       "type": "string"
@@ -55,7 +58,7 @@
       "type": "string"
     },
     "homeCensusTract": {
-      "type": "string"
+      "$ref": "#/definitions/place"
     },
     "monkeypoxCare": {
       "type": "string"
@@ -100,14 +103,17 @@
       "type": "boolean"
     },
     "referrerID": {
-      "type": "string"
+      "type": "string",
+      "minLength": 0
     },
     "referralType": {
       "type": "integer",
       "enum": [
+        null,
         0,
         1,
-        2
+        2,
+        3
       ]
     },
     "returnParticipant": {
@@ -168,7 +174,8 @@
       "type": "number"
     },
     "publicID": {
-      "type": "string"
+      "type": "string",
+      "format": "uuid"
     },
     "userName": {
       "type": "string"
@@ -202,5 +209,7 @@
     }
   },
   "required": [
+    "referrerID",
+    "referralType"
   ]
 }

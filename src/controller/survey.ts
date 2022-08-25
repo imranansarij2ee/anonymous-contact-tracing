@@ -24,3 +24,15 @@ export const createSurvey = async (req: Request, res: Response) => {
         res.status(500).send({message : neoError});
     }
 };
+
+export const createReferralRelation = async (req: Request, res: Response) => {
+    const survey : Survey = req.body;
+    try {
+        console.log(JSON.stringify(survey));
+        await NeoClient.createReferralRelation(survey);
+        res.status(200).send();
+    } catch (e) {
+        const neoError = e instanceof Neo4jError ? e.message : e;
+        res.status(500).send({message : neoError});
+    }
+};

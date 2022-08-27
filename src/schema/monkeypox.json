@@ -58,7 +58,7 @@
       "type": "string"
     },
     "homeCensusTract": {
-      "$ref": "#/definitions/place"
+      "type": "string"
     },
     "monkeypoxCare": {
       "type": "string"
@@ -76,7 +76,8 @@
       }
     },
     "publicID": {
-      "type": "string"
+      "type": "string",
+      "format": "uuid"
     },
     "raceAsian": {
       "type": "boolean"
@@ -104,7 +105,7 @@
       "minLength": 0
     },
     "referralType": {
-      "type": "integer",
+      "type": "number",
       "enum": [
         null,
         0,
@@ -170,14 +171,7 @@
     "travelTime": {
       "type": "number"
     },
-    "publicID": {
-      "type": "string",
-      "format": "uuid"
-    },
     "userName": {
-      "type": "string"
-    },
-    "username": {
       "type": "string"
     },
     "vaccinationDate": {

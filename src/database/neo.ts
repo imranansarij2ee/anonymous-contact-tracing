@@ -54,6 +54,8 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
 }
 
 export const createReferralRelation = async (survey: Survey): Promise<void> => {
+console.log("creating referral relation")
+    console.log(survey)
 
     if (isEmpty(survey.referrerID) || isEmpty(survey.publicID)) {
         return;
@@ -69,12 +71,15 @@ export const createReferralRelation = async (survey: Survey): Promise<void> => {
     switch (referralType) {
         case 0:
             referralCypher = friendWithRelationCypher;
+            console.log(referralCypher)
             break;
         case 1:
             referralCypher = hangoutWithRelationCypher;
+            console.log(referralCypher)
             break;
         case 2:
             referralCypher = sexWithRelationCypher;
+            console.log(referralCypher)
             break;
         default:
             console.log("referralType mapping not found");
@@ -91,9 +96,11 @@ export const createReferralRelation = async (survey: Survey): Promise<void> => {
 
 // privateId, homeCensusTract, places
 export const createRelation = async (survey: Survey): Promise<void> => {
+console.log("creating relation")
+
     const timeStamp = Date.now().toString();
     const userId = survey.userId;
-    const censusTractId = survey.homeCensusTract.censusTract;
+    const censusTractId = survey.homeCensusTract;
 
     const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId}) => {
         return {placeSex, placeType, userId, censusTractId, timeStamp};
@@ -114,12 +121,15 @@ export const createRelation = async (survey: Survey): Promise<void> => {
     switch (referralType) {
         case 0:
             referralCypher = friendWithRelationCypher;
+            console.log("friendWithRelationCypher", friendWithRelationCypher)
             break;
         case 1:
             referralCypher = hangoutWithRelationCypher;
+            console.log("referralCypher", referralCypher)
             break;
         case 2:
             referralCypher = sexWithRelationCypher;
+            console.log("referralCypher", referralCypher)
             break;
         default:
             console.log("referralType mapping not found");

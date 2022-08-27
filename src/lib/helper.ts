@@ -1,8 +1,20 @@
 import {adjectives, colors, Config, names, uniqueNamesGenerator} from "unique-names-generator";
 
+  const spyCodes = [
+    'lesbian',
+    'gay',
+    'bi',
+    'trans',
+    'intersex',
+    'aromantic',
+    'asexual',
+    'plus',
+    'pansexual',
+  ];
+
 export function generateUserName(): string {
     const customConfig: Config = {
-        dictionaries: [names, adjectives, colors],
+        dictionaries: [colors, adjectives, spyCodes],
         separator: '-',
         style: "lowerCase"
     };

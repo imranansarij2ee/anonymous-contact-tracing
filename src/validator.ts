@@ -7,6 +7,7 @@ const schemaValidator: Validator = new JsonSchema.Validator();
 
 export function validate(payload: Object): Array<string> {
 
+    console.log("payoad", payload)
     const validation: ValidatorResult = schemaValidator.validate(payload, monkeyPoxSchema);
     console.log(schemaValidator.validate(payload, monkeyPoxSchema))
     if (validation.valid && validation.errors.length === 0) {

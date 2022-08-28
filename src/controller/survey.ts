@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import * as NeoClient from "../database/neo";
 import * as SchemaValidator from "../validator";
 import Survey from '../model/survey'
-import {Neo4jError} from "neo4j-driver";
 
 export const createSurvey = async (req: Request, res: Response) => {
     const survey: Survey = req.body;

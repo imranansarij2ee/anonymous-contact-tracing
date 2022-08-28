@@ -25,28 +25,28 @@ async function checkIfNameExist(username: string): Promise<boolean> {
     const sql = `SELECT *
                  FROM user_info
                  WHERE user_name = '${username}'`;
-    const user: User = await findUser(sql);
-    return user.isEmpty();
+    const user: User | null = await findUser(sql);
+    return user === null;
 }
 
-export async function findUser(sql: string): Promise<User> {
+export async function findUser(sql: string): Promise<User | null> {
     try {
         const client = await pool.connect();
         const {rows: results} = await client.query(sql);
-        const {user_name, public_id, private_id }  = Array.isArray(results) && results.length > 0 ?
-           results.pop() : new User("", "", "");
-          client.release();
-        return new User(user_name, public_id, private_id).toPublicUser();
-    } catch (error) {
-        console.error("findUserById : ", error);
-        throw new Error("sql issue")
+        const resp  = Array.isArray(results) && results.length > 0 ?
+           results.pop() : null;
+        client.release();
+        if(resp !== null){
+            const {user_name, public_id, private_id } = resp;
+            return new User(user_name, public_id, private_id).toPublicUser();
+        }
+        return null;
+    } catch (e) {
+        throw e;
     }
 }
 
 export async function getUserPrivateId(publicId: string): Promise<string> {
-    if(isEmpty(publicId)){
-        throw new Error("public id is empty");
-    }
     const sql = `SELECT private_id
                  FROM user_info
                  WHERE public_id = '${publicId}'`;
@@ -59,7 +59,6 @@ export async function getUserPrivateId(publicId: string): Promise<string> {
         client.release();
         return data.private_id || null;
     } catch (error) {
-        console.error("getUserPrivateId : ", error);
         throw new Error("getUserPrivateId: sql issue");
     }
 }

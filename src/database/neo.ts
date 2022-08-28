@@ -11,7 +11,7 @@ import {
     sexWithRelationCypher
 } from '../lib/constant'
 import * as SqlClient from '../database/sql'
-import {isEmpty} from "../lib/helper";
+import {isEmpty, isValidUUID} from "../lib/helper";
 
 dotenv.config();
 
@@ -21,15 +21,15 @@ const password = process.env.NEO_PASS || "test";
 const driver = neo4j.driver(url, neo4j.auth.basic(user, password));
 
 export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
-    // get private_id and set it on survey
     const privateId = await SqlClient.getUserPrivateId(survey.publicID);
     if (privateId === null) {
         throw new Error("user private id not found");
     }
     survey.userId = privateId;
     let referralTypeValue: any;
+    const timeStamp = new Date().toISOString();
     referralTypeValue = isEmpty(survey.referrerID) ? "NONE" : referralTypeMapping.get(survey.referralType);
-    const surveyArgs = {...survey, referralTypeValue};
+    const surveyArgs = {...survey, referralTypeValue, timeStamp};
     const session = driver.session();
 
     try {
@@ -55,12 +55,12 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
 
 export const createReferralRelation = async (survey: Survey): Promise<void> => {
 
-    if (isEmpty(survey.referrerID) || isEmpty(survey.publicID)) {
+    if (isEmpty(survey.referrerID) || !isValidUUID(survey.referrerID)) {
         return;
     }
     const surveyUser = await SqlClient.getUserPrivateId(survey.publicID);
     const referringUser = await SqlClient.getUserPrivateId(survey.referrerID);
-    const timeStamp = Date.now().toString();
+    const timeStamp = new Date().toISOString();
     let referralTypeValue: any;
     let referralCypher = null;
     referralTypeValue = referralTypeMapping.get(survey.referralType);
@@ -91,9 +91,9 @@ export const createReferralRelation = async (survey: Survey): Promise<void> => {
 
 // privateId, homeCensusTract, places
 export const createRelation = async (survey: Survey): Promise<void> => {
-    const timeStamp = Date.now().toString();
+    const timeStamp = new Date().toISOString();
     const userId = survey.userId;
-    const censusTractId = survey.homeCensusTract.censusTract;
+    const censusTractId = survey.homeCensusTract;
 
     const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId}) => {
         return {placeSex, placeType, userId, censusTractId, timeStamp};

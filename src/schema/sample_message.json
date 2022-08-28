@@ -22,14 +22,7 @@
  "hivPrep": "yes",
  "hivStatus": "not-living-with-hiv",
  "hivSuppressed": "",
- "homeCensusTract": {
-  "censusTract": "36055003200",
-  "lat": 40.8377106124814,
-  "lng": -73.91538157666017,
-  "remove": false,
-  "placeType": "",
-  "placeSex": ""
- },
+ "homeCensusTract": "36055003200",
  "monkeypoxCare": "yes",
  "monkeypoxTest": "yes",
  "monkeypoxVaccine": "yes",

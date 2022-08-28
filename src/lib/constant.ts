@@ -16,7 +16,7 @@ symptomRectalDiscomfort: $symptomRectalDiscomfort ,symptomSoreThroat: $symptomSo
 symptomSorePenis:$symptomSorePenis,
 symptomSoresAnus: $symptomSoresAnus, symptomSwollenGlands: $symptomSwollenGlands ,
 travelTime: $travelTime ,vaccinationDate: $vaccinationDate , userId : $userId,
-userName: $userName
+userName: $userName, createdAt:$timeStamp
 }) RETURN p`;
 
 export const groupSexRelationCypher: string = `MATCH (p:Person {userId:$userId  })

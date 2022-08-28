@@ -13,7 +13,7 @@ export default interface Survey {
     "hivPrep": string;
     "hivStatus": string;
     "hivSuppressed": string;
-    "homeCensusTract": Place;
+    "homeCensusTract": string;
     "mapGroupSex": string;
     "monkeypoxCare": string;
     "monkeypoxTest": string;

@@ -38,7 +38,6 @@
     "covidTestPositive": {
       "type": "string"
     },
-
     "enterID": {
       "type": "string"
     },
@@ -97,8 +96,17 @@
       "type": "boolean"
     },
     "referrerID": {
-      "type": "string",
-      "minLength": 0
+      "description": "referrerID must be empty string or conform to valid uuid",
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        {
+          "type": "string",
+          "format": "uuid"
+        }
+      ]
     },
     "referralType": {
       "type": "integer",

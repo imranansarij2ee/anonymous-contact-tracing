@@ -19,7 +19,7 @@ hivSuppressed: $hivSuppressed , mapGroupSex: $mapGroupSex, mapHome: $mapHome ,
 monkeypoxCare: $monkeypoxCare, monkeypoxTest: $monkeypoxTest,
 monkeypoxVaccine: $monkeypoxVaccine, raceAPI: $raceAPI ,raceBlack: $raceBlack, 
 raceLatinx: $raceLatinx ,raceOther: $raceOther ,raceWhite: $raceWhite, 
-referrerEnglish: $referrerEnglish, referrerID: $referrerID ,sex: $sex,
+referrerEnglish: $referrerEnglish ,sex: $sex,
 sexOrientation: $sexOrientation ,symptomBackAche: $symptomBackAche ,
 symptomBodyRash: $symptomBodyRash ,
 symptomChills: $symptomChills, symptomExhaustion: $symptomExhaustion,
@@ -28,7 +28,7 @@ symptomHeadache: $symptomHeadache ,symptomMouth: $symptomMouth ,
 symptomMuscleAche: $symptomMuscleAche ,symptomOther: $symptomOther,
 symptomRectalDiscomfort: $symptomRectalDiscomfort ,symptomSoreThroat: $symptomSoreThroat ,
 symptomSoresAnus: $symptomSoresAnus, symptomSwollenGlands: $symptomSwollenGlands ,
-travelTime: $travelTime ,vaccinationDate: $vaccinationDate 
+travelTime: $travelTime, vaccinationDate: $vaccinationDate 
 }) RETURN a`;
 
 // const createPersonQuery : string = `CREATE (a:Person { age : $age , anotherPlace : $anotherPlace ,

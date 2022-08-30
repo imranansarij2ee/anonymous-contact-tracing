@@ -14,30 +14,31 @@
         "65+"
       ]
     },
-    "anotherPlace": {
+    "anotherQuestion": {
       "type": "string"
     },
     "bestApp": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "channel": {
       "type": "string"
     },
     "countFriends": {
-      "type": "string"
+      "type": "number"
     },
     "countPhysical": {
-      "type": "string"
+      "type": "number"
     },
     "countSex": {
-      "type": "string"
+      "type": "number"
     },
     "covidTestPositive": {
       "type": "string"
     },
-    "enterCodeName": {
-      "type": "string"
-    },
+
     "enterID": {
       "type": "string"
     },
@@ -56,13 +57,7 @@
     "hivSuppressed": {
       "type": "string"
     },
-    "home": {
-      "type": "string"
-    },
-    "mapGroupSex": {
-      "type": "string"
-    },
-    "mapHome": {
+    "homeCensusTract": {
       "type": "string"
     },
     "monkeypoxCare": {
@@ -72,16 +67,6 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
-    },
-    "overallPrompt": {
       "type": "string"
     },
     "places": {
@@ -90,10 +75,7 @@
         "$ref": "#/definitions/place"
       }
     },
-    "provideIDPrompt": {
-      "type": "string"
-    },
-    "raceAPI": {
+    "raceAsian": {
       "type": "boolean"
     },
     "raceBlack": {
@@ -102,7 +84,7 @@
     "raceLatinx": {
       "type": "boolean"
     },
-    "raceMulti": {
+    "racePacific": {
       "type": "boolean"
     },
     "raceOther": {
@@ -115,30 +97,29 @@
       "type": "boolean"
     },
     "referrerID": {
-      "type": "string"
+      "type": "string",
+      "minLength": 0
+    },
+    "referralType": {
+      "type": "integer",
+      "enum": [
+        null,
+        0,
+        1,
+        2,
+        3
+      ]
     },
     "returnParticipant": {
-      "type": "boolean"
+      "type": "string"
     },
     "sex": {
-      "type": "string",
-      "enum": [
-        "Male",
-        "Female",
-        "Other"
-      ]
+      "type": "string"
     },
     "sexOrientation": {
-      "type": "string",
-      "enum": [
-        "Gay",
-        "Bisexual",
-        "Straight",
-        "Queer",
-        "Something Else"
-      ]
+      "type": "string"
     },
-    "sorePenis": {
+    "symptomSorePenis": {
       "type": "boolean"
     },
     "symptomBackAche": {
@@ -184,6 +165,16 @@
       "type": "boolean"
     },
     "travelTime": {
+      "type": "number"
+    },
+    "publicID": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "username": {
       "type": "string"
     },
     "vaccinationDate": {
@@ -212,5 +203,7 @@
     }
   },
   "required": [
+    "referrerID",
+    "referralType"
   ]
 }

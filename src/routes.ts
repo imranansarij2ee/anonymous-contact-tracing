@@ -23,11 +23,7 @@ router.get('/user/public/:publicId', UserService.getUserByPublicId);
 
 // survey routs
 router.post('/survey', SurveyService.createSurvey);
+router.post('/survey/assign-referral', SurveyService.createReferralRelation);
 
-
-
-// router.get('/survey', (req: Request, res: Response) => {
-//     res.send('Survey complete')
-// });
 
 export default router;

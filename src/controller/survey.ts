@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import * as NeoClient from "../database/neo";
 import * as SchemaValidator from "../validator";
 import Survey from '../model/survey'
-import {Neo4jError} from "neo4j-driver";
+import {isEmpty, isValidUUID} from "../lib/helper";
 
 export const createSurvey = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
@@ -25,9 +25,17 @@ export const createSurvey = async (req: Request, res: Response) => {
 
 export const createReferralRelation = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
+    if(isEmpty(survey.publicID) || isEmpty(survey.referrerID)){
+        return res.status(400).json({message:"publicID and referrerID is required"});
+    }
+
+    if(!isValidUUID(survey.publicID) || !isValidUUID(survey.referrerID)){
+        return res.status(400).json({message:"publicID and referrerID must be a valid uuid"});
+    }
+
     try {
         await NeoClient.createReferralRelation(survey);
-        res.status(201).json();
+        return res.status(201).json();
     } catch (e) {
         // const neoError = e instanceof Neo4jError ? e.message : e;
         return res.status(500).json(e);

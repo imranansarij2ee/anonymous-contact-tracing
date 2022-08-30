@@ -1,6 +1,7 @@
 export const createSurveyCypher: string = `CREATE (p:Person { age: $age ,
 anotherQuestion: $anotherQuestion ,bestApp: $bestApp ,
 channel: $channel ,covidTestPositive: $covidTestPositive,
+countFriends: $countFriends, countPhysical: $countPhysical, countSex: $countSex,
 groupSex: $groupSex ,hivPrep: $hivPrep ,hivStatus: $hivStatus ,
 hivSuppressed: $hivSuppressed ,monkeypoxCare: $monkeypoxCare, monkeypoxTest: $monkeypoxTest,
 monkeypoxVaccine: $monkeypoxVaccine, raceAsian:$raceAsian, racePacific:$racePacific ,
@@ -15,18 +16,18 @@ symptomMuscleAche: $symptomMuscleAche ,symptomOther: $symptomOther,
 symptomRectalDiscomfort: $symptomRectalDiscomfort ,symptomSoreThroat: $symptomSoreThroat ,
 symptomSorePenis:$symptomSorePenis,
 symptomSoresAnus: $symptomSoresAnus, symptomSwollenGlands: $symptomSwollenGlands ,
-travelTime: $travelTime ,vaccinationDate: $vaccinationDate , userId : $userId,
+travelTime: $travelTime ,vaccinationDate: $vaccinationDate , userId : $userId, 
 createdAt:$timeStamp
 }) RETURN p`;
 
 export const groupSexRelationCypher: string = `MATCH (p:Person {userId:$userId  })
 MATCH (c:CensusTract {identifier : $censusTractId })
-CREATE (p)-[r:GROUP_SEX_IN]->(c)
+MERGE (p)-[r:GROUP_SEX_IN]->(c)
 SET r.createdAt=$timeStamp, r.placeSex=$placeSex , r.placeType=$placeType`;
 
 export const livesInRelationCypher: string = `MATCH (p:Person {userId:$userId  })
 MATCH (c:CensusTract {identifier : $censusTractId })
-CREATE (p)-[r:LIVES_IN]->(c)
+MERGE (p)-[r:LIVES_IN]->(c)
 SET r.createdAt=$timeStamp`;
 
 export const friendWithRelationCypher: string = `MATCH (a:Person {userId:$userId  })

@@ -12,10 +12,10 @@ const sqlPass = process.env.SQL_PASS;
 const dbName = process.env.SQL_DB_NAME;
 
 const pool = new Pool({
-    max: 20,
     host: sqlHost,
     port: sqlPort,
     user: sqlUser,
+    query_timeout: 30000,
     password: sqlPass,
     database: dbName
 
@@ -35,7 +35,7 @@ export async function findUser(sql: string): Promise<User | null> {
         const {rows: results} = await client.query(sql);
         const resp  = Array.isArray(results) && results.length > 0 ?
            results.pop() : null;
-        client.release();
+        await client.release();
         if(resp !== null){
             const {user_name, public_id, private_id } = resp;
             return new User(user_name, public_id, private_id).toPublicUser();
@@ -56,7 +56,7 @@ export async function getUserPrivateId(publicId: string): Promise<string> {
 
         const data = Array.isArray(results) && results.length > 0 ?
             results.pop() : null;
-        client.release();
+        await client.release();
         return data.private_id || null;
     } catch (error) {
         throw new Error("getUserPrivateId: sql issue");
@@ -78,6 +78,7 @@ export async function generateUser(): Promise<Object> {
 
         const {rowCount} = await client.query(insert_statement);
 
+        await client.release();
         if (rowCount == 0) {
             throw new Error("no user created");
         }

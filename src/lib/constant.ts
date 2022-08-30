@@ -5,7 +5,7 @@ groupSex: $groupSex ,hivPrep: $hivPrep ,hivStatus: $hivStatus ,
 hivSuppressed: $hivSuppressed ,monkeypoxCare: $monkeypoxCare, monkeypoxTest: $monkeypoxTest,
 monkeypoxVaccine: $monkeypoxVaccine, raceAsian:$raceAsian, racePacific:$racePacific ,
 raceBlack: $raceBlack, raceLatinx: $raceLatinx ,raceOther: $raceOther ,raceWhite: $raceWhite, 
-referrerEnglish: $referrerEnglish, referrerID: $referrerID , referralType:$referralTypeValue,
+referrerEnglish: $referrerEnglish, referralType:$referralTypeValue,
 sex: $sex, sexOrientation: $sexOrientation ,symptomBackAche: $symptomBackAche ,
 symptomBodyRash: $symptomBodyRash ,returnParticipant:$returnParticipant,
 symptomChills: $symptomChills, symptomExhaustion: $symptomExhaustion,
@@ -16,7 +16,7 @@ symptomRectalDiscomfort: $symptomRectalDiscomfort ,symptomSoreThroat: $symptomSo
 symptomSorePenis:$symptomSorePenis,
 symptomSoresAnus: $symptomSoresAnus, symptomSwollenGlands: $symptomSwollenGlands ,
 travelTime: $travelTime ,vaccinationDate: $vaccinationDate , userId : $userId,
-userName: $userName, createdAt:$timeStamp
+createdAt:$timeStamp
 }) RETURN p`;
 
 export const groupSexRelationCypher: string = `MATCH (p:Person {userId:$userId  })

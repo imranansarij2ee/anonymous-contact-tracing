@@ -17,3 +17,15 @@ create unique index user_info_user_name_uindex
 alter table user_info
     add constraint user_info_pk
         primary key (user_name);
+
+
+### neo4j constaint ###
+CREATE CONSTRAINT unique_private_person_identifier IF NOT EXISTS
+FOR (p:Person) REQUIRE p.userId IS UNIQUE
+
+CREATE CONSTRAINT unique_census_tract_identifier IF NOT EXISTS
+FOR (c:CensusTract) REQUIRE c.identifier IS UNIQUE
+
+MATCH (n:Person)
+DETACH DELETE n
+

@@ -2,12 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "places": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/place"
-      }
-    },
     "age": {
       "type": "string",
       "enum": [
@@ -20,70 +14,49 @@
         "65+"
       ]
     },
-    "anotherPlace": {
-      "type": "string",
-      "enum": [
-        "Yes – Add place",
-        "No – Done adding places",
-        "Sí – Agrega el lugar",
-        "No – Terminé de agregar lugares"
-      ]
+    "anotherQuestion": {
+      "type": "string"
     },
     "bestApp": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "channel": {
       "type": "string"
     },
+    "countFriends": {
+      "type": "number"
+    },
+    "countPhysical": {
+      "type": "number"
+    },
+    "countSex": {
+      "type": "number"
+    },
     "covidTestPositive": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Did not test",
-        "Sí",
-        "No me hice la prueba"
-      ]
+      "type": "string"
+    },
+    "enterID": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
     },
     "groupSex": {
       "type": "string"
     },
     "hivPrep": {
-      "type": "string",
-      "enum": [
-        "Living with HIV",
-        "Not living with HIV",
-        "Unsure",
-        "Vivo con VIH",
-        "No vivo con VIH",
-        "No sé"
-      ]
-    },
-    "hivStatus": {
-      "type": "string",
-      "enum": [
-        "Living with HIV",
-        "Not living with HIV",
-        "Unsure",
-        "Vivo con VIH",
-        "No vivo con VIH",
-        "No sé"
-      ]
-    },
-    "hivSuppressed": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
-    },
-    "mapGroupSex": {
       "type": "string"
     },
-    "mapHome": {
+    "hivStatus": {
+      "type": "string"
+    },
+    "hivSuppressed": {
+      "type": "string"
+    },
+    "homeCensusTract": {
       "type": "string"
     },
     "monkeypoxCare": {
@@ -93,22 +66,24 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
-      "type": "string",
-      "enum": [
-        "Yes",
-        "No",
-        "Unsure",
-        "Sí",
-        "No sé"
-      ]
+      "type": "string"
     },
-    "raceAPI": {
+    "places": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/place"
+      }
+    },
+    "raceAsian": {
       "type": "boolean"
     },
     "raceBlack": {
       "type": "boolean"
     },
     "raceLatinx": {
+      "type": "boolean"
+    },
+    "racePacific": {
       "type": "boolean"
     },
     "raceOther": {
@@ -121,30 +96,39 @@
       "type": "boolean"
     },
     "referrerID": {
+      "description": "referrerID must be empty string or conform to valid uuid",
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        {
+          "type": "string",
+          "format": "uuid"
+        }
+      ]
+    },
+    "referralType": {
+      "type": "integer",
+      "enum": [
+        null,
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "returnParticipant": {
       "type": "string"
     },
     "sex": {
-      "type": "string",
-      "enum": [
-        "Male",
-        "Female",
-        "Other",
-        "Hombre",
-        "Mujer",
-        "Otro"
-      ]
+      "type": "string"
     },
     "sexOrientation": {
-      "type": "string",
-      "enum": [
-        "Gay",
-        "Bisexual",
-        "Straight",
-        "Queer",
-        "Something Else",
-        "Heterosexual",
-        "Otra"
-      ]
+      "type": "string"
+    },
+    "symptomSorePenis": {
+      "type": "boolean"
     },
     "symptomBackAche": {
       "type": "boolean"
@@ -189,6 +173,16 @@
       "type": "boolean"
     },
     "travelTime": {
+      "type": "number"
+    },
+    "publicID": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "username": {
       "type": "string"
     },
     "vaccinationDate": {
@@ -217,45 +211,7 @@
     }
   },
   "required": [
-    "age",
-    "anotherPlace",
-    "bestApp",
-    "channel",
-    "covidTestPositive",
-    "groupSex",
-    "hivPrep",
-    "hivStatus",
-    "hivSuppressed",
-    "mapGroupSex",
-    "mapHome",
-    "monkeypoxCare",
-    "monkeypoxTest",
-    "monkeypoxVaccine",
-    "raceAPI",
-    "raceBlack",
-    "raceLatinx",
-    "raceOther",
-    "raceWhite",
-    "referrerEnglish",
     "referrerID",
-    "sex",
-    "sexOrientation",
-    "symptomBackAche",
-    "symptomBodyRash",
-    "symptomChills",
-    "symptomExhaustion",
-    "symptomFacialRash",
-    "symptomFever",
-    "symptomHeadache",
-    "symptomMouth",
-    "symptomMuscleAche",
-    "symptomOther",
-    "symptomRectalDiscomfort",
-    "symptomSoreThroat",
-    "symptomSoresAnus",
-    "symptomSwollenGlands",
-    "travelTime",
-    "vaccinationDate",
-    "places"
+    "referralType"
   ]
 }

@@ -41,6 +41,9 @@
     "enterID": {
       "type": "string"
     },
+    "english": {
+      "type": "boolean"
+    },
     "gender": {
       "type": "string"
     },
@@ -66,6 +69,9 @@
       "type": "string"
     },
     "monkeypoxVaccine": {
+      "type": "string"
+    },
+    "monkeypoxDiagnosis": {
       "type": "string"
     },
     "places": {
@@ -201,7 +207,13 @@
         },
         "placeType": {
           "type": "string"
-        }
+        },
+        "placeFreqAttend": {
+           "type": "number"
+      },
+        "placeFreqHaveSex": {
+        "type": "number"
+      }
       },
       "required": [
         "censusTract",

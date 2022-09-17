@@ -8,6 +8,7 @@ export default interface Survey {
     "countPhysical": number;
     "countSex": number;
     "covidTestPositive": string;
+    "english": boolean;
     "gender": string;
     "groupSex": string;
     "hivPrep": string;
@@ -18,6 +19,7 @@ export default interface Survey {
     "monkeypoxCare": string;
     "monkeypoxTest": string;
     "monkeypoxVaccine": string;
+    "monkeypoxDiagnosis": string;
     "places": Array<Place>,
     "publicID": string;
     "raceAsian" :boolean;

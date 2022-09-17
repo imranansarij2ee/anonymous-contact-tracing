@@ -95,8 +95,8 @@ export const createRelation = async (survey: Survey): Promise<void> => {
     const userId = survey.userId;
     const censusTractId = survey.homeCensusTract;
 
-    const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId}) => {
-        return {placeSex, placeType, userId, censusTractId, timeStamp};
+    const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId, placeFreqHaveSex, placeFreqAttend}) => {
+        return {placeSex, placeType, userId, censusTractId, timeStamp, placeFreqHaveSex, placeFreqAttend};
     });
 
     const liveInArgs = {userId, censusTractId, timeStamp};

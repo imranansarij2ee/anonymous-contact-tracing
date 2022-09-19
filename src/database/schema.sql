@@ -5,6 +5,9 @@ create table user_info
     private_id uuid not null
 );
 
+/**
+  ### user schema ###
+ **/
 create unique index user_info_private_id_uindex
     on user_info (private_id);
 
@@ -18,8 +21,30 @@ alter table user_info
     add constraint user_info_pk
         primary key (user_name);
 
+/**
+  ### user_contact ###
+ **/
 
-### neo4j constaint ###
+create table user_contact
+(
+    id uuid not null,
+    email varchar(100) not null
+);
+
+create unique index user_contact_email_uindex
+    on user_contact (email);
+
+create unique index user_contact_id_uindex
+    on user_contact (id);
+
+alter table user_contact
+    add constraint user_contact_pk
+        primary key (id);
+
+
+/**
+  ### neo4j constraint ###
+ **/
 CREATE CONSTRAINT unique_private_person_identifier IF NOT EXISTS
 FOR (p:Person) REQUIRE p.userId IS UNIQUE
 

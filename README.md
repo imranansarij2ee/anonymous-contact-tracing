@@ -87,6 +87,7 @@ develop => https://act-develop.herokuapp.com
   GET   | /user/name/:username    | get user by username
   GET   | /user/private/:privateId| get user by private id
   GET   | /user/public/:publicId  | get user by public id
+  POST  | /user/contact           | save email to db
   POST  | /survey                  | accept survey data and persist in neo4j
 +--------+----------------------------------------------------------------------+
 

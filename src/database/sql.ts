@@ -1,7 +1,7 @@
 import {Pool} from 'pg';
 import {v4} from 'uuid';
 import User from '../model/user';
-import {generateUserName, isEmpty} from '../lib/helper';
+import {generateUserName} from '../lib/helper';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -33,11 +33,11 @@ export async function findUser(sql: string): Promise<User | null> {
     try {
         const client = await pool.connect();
         const {rows: results} = await client.query(sql);
-        const resp  = Array.isArray(results) && results.length > 0 ?
-           results.pop() : null;
+        const resp = Array.isArray(results) && results.length > 0 ?
+            results.pop() : null;
         await client.release();
-        if(resp !== null){
-            const {user_name, public_id, private_id } = resp;
+        if (resp !== null) {
+            const {user_name, public_id, private_id} = resp;
             return new User(user_name, public_id, private_id).toPublicUser();
         }
         return null;
@@ -86,5 +86,21 @@ export async function generateUser(): Promise<Object> {
         // client.release();
     } catch (error) {
         throw new Error("sql issue");
+    }
+}
+
+export async function saveContact(email: string): Promise<void> {
+    try {
+
+        const client = await pool.connect();
+        const id = v4();
+        let insert_statement = `INSERT INTO user_contact (id, email)
+                                VALUES ('${id}', '${email}')`;
+
+        await client.query(insert_statement);
+        await client.release();
+
+    } catch (error) {
+        throw error;
     }
 }

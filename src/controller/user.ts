@@ -1,7 +1,8 @@
 import {Request, Response} from 'express';
-import {findUser, generateUser} from "../database/sql";
+import {findUser, generateUser, saveContact} from "../database/sql";
 import User from "../model/user";
-import {isValidUUID} from "../lib/helper";
+import {SqlError} from "../model/error";
+import {isValidEmail, isValidUUID} from "../lib/helper";
 
 
 // Get user
@@ -13,6 +14,29 @@ export const createUser = async (req: Request, res: Response) => {
         return res.status(404).json(e);
     }
 };
+
+export const createContact = async (req: Request, res: Response) => {
+    const email = req.body.email;
+
+    if (!isValidEmail(email)) {
+        return res.status(400).json({
+            "message": `email : ${email} is not valid`
+        })
+    }
+    try {
+        await saveContact(email);
+        return res.status(201).json();
+    } catch (e: any) {
+        const {detail, constraint}: SqlError = e;
+
+        if (detail.includes('already exists') && constraint === 'user_contact_email_uindex') {
+            return res.status(409).json({
+                "message": `email : ${email} already exist`
+            });
+        }
+        return res.status(500).json(e);
+    }
+}
 
 
 export const getUserByPublicId = async (req: Request, res: Response) => {

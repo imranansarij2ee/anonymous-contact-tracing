@@ -35,6 +35,7 @@ router.post('/user', UserService.createUser);
 router.get('/user/name/:username', UserService.getUserByUserName);
 router.get('/user/private/:privateId', UserService.getUserByPrivateId);
 router.get('/user/public/:publicId', UserService.getUserByPublicId);
+router.post('/user/contact', UserService.createContact);
 
 // survey routs
 router.post('/survey', SurveyService.createSurvey);

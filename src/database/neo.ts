@@ -32,19 +32,18 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
     const surveyArgs = {...survey, referralTypeValue, timeStamp};
     const session = driver.session();
 
+
     try {
-        const result = await session.run(
+        await session.run(
             createSurveyCypher,
             surveyArgs
         );
 
-        const singleRecord = result.records[0];
-        const node = singleRecord.get(0);
-        // create relationship
         await createRelation(survey);
-        return node;
+
 
     } catch (e) {
+        console.log(e)
         throw e;
     } finally {
         await session.close();

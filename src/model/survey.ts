@@ -4,6 +4,7 @@ export default interface Survey {
     age: string;
     bestApp: Array<string>;
     "channel": string;
+    "completeSurvey": boolean;
     "countFriends": number;
     "countPhysical": number;
     "countSex": number;

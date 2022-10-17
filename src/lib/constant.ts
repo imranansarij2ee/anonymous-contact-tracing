@@ -1,6 +1,7 @@
 export const createSurveyCypher :  string = `MERGE (p:Person { userId :  $userId}) SET p.age = $age ,
 p.anotherQuestion = $anotherQuestion , p.bestApp = $bestApp ,
-p.channel =  $channel ,p.covidTestPositive =  $covidTestPositive,
+p.channel =  $channel , p.completeResponse = $completeResponse,
+p.covidTestPositive =  $covidTestPositive,
 p.countFriends =  $countFriends, p.countPhysical =  $countPhysical, p.countSex =  $countSex, p.english = $english, p.gender =  $gender,
 p.groupSex =  $groupSex, p.hivPrep =  $hivPrep ,p.hivStatus =  $hivStatus ,
 p.hivSuppressed =  $hivSuppressed ,p.monkeypoxCare =  $monkeypoxCare, p.monkeypoxTest =  $monkeypoxTest,

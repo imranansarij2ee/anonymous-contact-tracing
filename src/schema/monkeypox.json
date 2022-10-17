@@ -26,6 +26,9 @@
     "channel": {
       "type": "string"
     },
+    "completeResponse:": {
+      "type": "boolean"
+    },
     "countFriends": {
       "type": "number"
     },

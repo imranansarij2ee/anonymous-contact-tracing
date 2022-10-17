@@ -32,6 +32,7 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
     const surveyArgs = {...survey, referralTypeValue, timeStamp};
     const session = driver.session();
 
+    console.log(surveyArgs);
 
     try {
         await session.run(

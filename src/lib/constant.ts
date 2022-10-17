@@ -21,6 +21,31 @@ p.travelTime =  $travelTime ,p.vaccinationDate =  $vaccinationDate , p.userId  =
 p.createdAt = $timeStamp
 `;
 
+export const getSurveyCypher : string = `
+MATCH (p:Person { userId :  $userId})
+RETURN p.age as age ,
+p.anotherQuestion as anotherQuestion , p.bestApp as bestApp ,
+p.channel as  channel , p.completeResponse as completeResponse,
+p.covidTestPositive as  covidTestPositive,
+p.countFriends as  countFriends, p.countPhysical as  countPhysical, p.countSex as  countSex, p.english as english, p.gender as  gender,
+p.groupSex as  groupSex, p.hivPrep as  hivPrep ,p.hivStatus as  hivStatus ,
+p.hivSuppressed as  hivSuppressed ,p.monkeypoxCare as  monkeypoxCare, p.monkeypoxTest as  monkeypoxTest,
+p.monkeypoxVaccine as  monkeypoxVaccine, p.monkeypoxDiagnosis as  monkeypoxDiagnosis, p.raceAsian as raceAsian, p.racePacific as racePacific ,
+p.raceBlack as  raceBlack, p.raceLatinx as  raceLatinx ,p.raceOther as  raceOther ,p.raceWhite as  raceWhite, 
+p.referrerEnglish as  referrerEnglish, p.referralType as referralTypeValue,
+p.sex as  sex, p.sexOrientation as  sexOrientation ,p.symptomBackAche as  symptomBackAche ,
+p.symptomBodyRash as  symptomBodyRash ,p.returnParticipant as returnParticipant,
+p.symptomChills as  symptomChills, p.symptomExhaustion as  symptomExhaustion,
+p.symptomFacialRash as  symptomFacialRash , p.symptomFever as  symptomFever ,
+p.symptomHeadache as  symptomHeadache ,p.symptomMouth as  symptomMouth ,
+p.symptomMuscleAche as  symptomMuscleAche ,p.symptomOther as  symptomOther,
+p.symptomRectalDiscomfort as  symptomRectalDiscomfort ,p.symptomSoreThroat as  symptomSoreThroat ,
+p.symptomSorePenis as symptomSorePenis,
+p.symptomSoresAnus as  symptomSoresAnus, p.symptomSwollenGlands as  symptomSwollenGlands ,
+p.travelTime as  travelTime ,p.vaccinationDate as  vaccinationDate , p.userId  as  userId, 
+p.createdAt as timeStamp
+`
+
 
 export const groupSexRelationCypher: string = `MATCH (p:Person {userId:$userId  })
 MATCH (c:CensusTract {identifier : $censusTractId })

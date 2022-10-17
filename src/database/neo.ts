@@ -4,6 +4,7 @@ import Survey from '../model/survey'
 import {
     createSurveyCypher,
     friendWithRelationCypher,
+    getSurveyCypher,
     groupSexRelationCypher,
     hangoutWithRelationCypher,
     livesInRelationCypher,
@@ -147,3 +148,42 @@ const runRelationCypher = async (cypher: string, args: Object): Promise<void> =>
     }
 }
 
+
+export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
+    const privateId = await SqlClient.getUserPrivateId(survey.publicID);
+    if (privateId === null) {
+        throw new Error("user private id not found");
+    }
+    survey.userId = privateId;
+    const session = driver.session();
+
+    try {
+        const savedSurvey = await session.run(
+            getSurveyCypher,
+            {userId: privateId}
+        );
+
+        console.log("savedSurvey", savedSurvey);
+
+        const incomingSurvey = Object.create(survey);
+
+        const newSurvey = Object.keys(savedSurvey).reduce(function(result, key) {
+            // @ts-ignore
+            result[key] = savedSurvey[key] === "" ? incomingSurvey[key] : savedSurvey[key];
+            return result;
+        }, Object.create({}))
+
+        await session.run(
+            createSurveyCypher,
+            newSurvey
+        );
+
+    } catch (e) {
+        console.log(e)
+        throw e;
+    } finally {
+        await session.close();
+    }
+    return privateId;
+
+}

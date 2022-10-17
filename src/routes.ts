@@ -40,6 +40,7 @@ router.post('/user/contact', UserService.createContact);
 // survey routs
 router.post('/survey', SurveyService.createSurvey);
 router.post('/survey/assign-referral', SurveyService.createReferralRelation);
+router.post('/survey/update', SurveyService.updateSurvey)
 
 
 export default router;

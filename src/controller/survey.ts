@@ -4,6 +4,8 @@ import * as SchemaValidator from "../validator";
 import Survey from '../model/survey'
 import {isEmpty, isValidUUID} from "../lib/helper";
 import {updateSurveyEntry} from "../database/neo";
+import User from "../model/user";
+import {findUser} from "../database/sql";
 
 export const createSurvey = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
@@ -51,7 +53,7 @@ export const updateSurvey = async (req: Request, res: Response) => {
     }
 
     if(!isValidUUID(survey.publicID)){
-        return res.status(400).json({message:"publicID and referrerID must be a valid uuid"});
+        return res.status(400).json({message:"publicID must be a valid uuid"});
     }
 
     try {
@@ -62,3 +64,23 @@ export const updateSurvey = async (req: Request, res: Response) => {
         return res.status(500).json(e);
     }
 };
+
+
+export const checkSurveyComplete = async (req: Request, res: Response) => {
+    const survey: Survey = req.body;
+    if(isEmpty(survey.userName)){
+        return res.status(400).json({message:"userName is required"});
+    }
+
+console.log("survey checkSurveyComplete", survey)
+
+    try {
+        const data: Object | null = await NeoClient.checkSurveyComplete(survey);
+        console.log("data", data)
+        return res.status(200).json(data);
+    } catch (e) {
+        // const neoError = e instanceof Neo4jError ? e.message : e;
+        return res.status(500).json(e);
+    }
+
+}

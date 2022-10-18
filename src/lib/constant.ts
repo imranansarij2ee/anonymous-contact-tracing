@@ -46,6 +46,11 @@ p.travelTime as  travelTime ,p.vaccinationDate as  vaccinationDate , p.userId  a
 p.createdAt as timeStamp
 `
 
+export const checkSurveyCompleteCypher: string = `
+MATCH (p:Person { userId :  $userId})
+RETURN p.completeResponse as completeResponse
+`
+
 
 export const groupSexRelationCypher: string = `MATCH (p:Person {userId:$userId  })
 MATCH (c:CensusTract {identifier : $censusTractId })

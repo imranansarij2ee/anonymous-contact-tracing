@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express';
 import * as UserService from "./controller/user";
 import * as SurveyService from "./controller/survey";
+import {checkSurveyComplete} from "./database/neo";
 const router = express.Router()
 
 const apiKey: Array<string> = process.env.API_KEY ? process.env.API_KEY.split(",") : [];
@@ -37,10 +38,11 @@ router.get('/user/private/:privateId', UserService.getUserByPrivateId);
 router.get('/user/public/:publicId', UserService.getUserByPublicId);
 router.post('/user/contact', UserService.createContact);
 
-// survey routs
+// survey routes
 router.post('/survey', SurveyService.createSurvey);
 router.post('/survey/assign-referral', SurveyService.createReferralRelation);
 router.post('/survey/update', SurveyService.updateSurvey)
+router.post('/survey/checkComplete', SurveyService.checkSurveyComplete)
 
 
 export default router;

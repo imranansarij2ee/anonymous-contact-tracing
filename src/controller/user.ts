@@ -9,6 +9,7 @@ import {isValidEmail, isValidUUID} from "../lib/helper";
 export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await generateUser();
+        console.log("generated user", user)
         return res.status(200).json(user);
     } catch (e) {
         return res.status(404).json(e);
@@ -89,10 +90,11 @@ export const getUserByPrivateId = async (req: Request, res: Response) => {
 export const getUserByUserName = async (req: Request, res: Response) => {
     const username = req.params.username;
     try {
-        const sql = `SELECT *
+        const sql = `SELECT private_id
                      FROM user_info
                      WHERE user_name = '${username}' LIMIT 1`;
         const data: User | null = await findUser(sql);
+
         if (data == null) {
             return res.status(404).json({
                 "message": `resource with username : ${username} not found.`

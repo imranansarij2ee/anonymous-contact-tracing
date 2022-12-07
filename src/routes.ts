@@ -37,9 +37,11 @@ router.get('/user/private/:privateId', UserService.getUserByPrivateId);
 router.get('/user/public/:publicId', UserService.getUserByPublicId);
 router.post('/user/contact', UserService.createContact);
 
-// survey routs
+// survey routes
 router.post('/survey', SurveyService.createSurvey);
 router.post('/survey/assign-referral', SurveyService.createReferralRelation);
+router.post('/survey/update', SurveyService.updateSurvey)
+router.post('/survey/getLastQuestion', SurveyService.getLastQuestion)
 
 
 export default router;

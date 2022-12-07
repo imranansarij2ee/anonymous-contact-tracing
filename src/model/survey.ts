@@ -15,6 +15,7 @@ export default interface Survey {
     "hivStatus": string;
     "hivSuppressed": string;
     "homeCensusTract": string;
+    "lastQuestion": string;
     "mapGroupSex": string;
     "monkeypoxCare": string;
     "monkeypoxTest": string;

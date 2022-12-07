@@ -1,10 +1,11 @@
 export const createSurveyCypher :  string = `MERGE (p:Person { userId :  $userId}) SET p.age = $age ,
 p.anotherQuestion = $anotherQuestion , p.bestApp = $bestApp ,
-p.channel =  $channel , p.completeResponse = $completeResponse,
+p.channel =  $channel , 
 p.covidTestPositive =  $covidTestPositive,
 p.countFriends =  $countFriends, p.countPhysical =  $countPhysical, p.countSex =  $countSex, p.english = $english, p.gender =  $gender,
 p.groupSex =  $groupSex, p.hivPrep =  $hivPrep ,p.hivStatus =  $hivStatus ,
-p.hivSuppressed =  $hivSuppressed ,p.monkeypoxCare =  $monkeypoxCare, p.monkeypoxTest =  $monkeypoxTest,
+p.hivSuppressed =  $hivSuppressed , p.lastQuestion = $lastQuestion,
+p.monkeypoxCare =  $monkeypoxCare, p.monkeypoxTest =  $monkeypoxTest,
 p.monkeypoxVaccine =  $monkeypoxVaccine, p.monkeypoxDiagnosis =  $monkeypoxDiagnosis, p.raceAsian = $raceAsian, p.racePacific = $racePacific ,
 p.raceBlack =  $raceBlack, p.raceLatinx =  $raceLatinx ,p.raceOther =  $raceOther ,p.raceWhite =  $raceWhite, 
 p.referrerEnglish =  $referrerEnglish, p.referralType = $referralTypeValue,
@@ -23,13 +24,16 @@ p.createdAt = $timeStamp
 
 export const getSurveyCypher : string = `
 MATCH (p:Person { userId :  $userId})
+OPTIONAL MATCH (p)-[:LIVES_IN]-(l:CensusTract)
+OPTIONAL MATCH (p)-[g:GROUP_SEX_IN]-(gc:CensusTract)
 RETURN p.age as age ,
 p.anotherQuestion as anotherQuestion , p.bestApp as bestApp ,
 p.channel as  channel , p.completeResponse as completeResponse,
 p.covidTestPositive as  covidTestPositive,
 p.countFriends as  countFriends, p.countPhysical as  countPhysical, p.countSex as  countSex, p.english as english, p.gender as  gender,
 p.groupSex as  groupSex, p.hivPrep as  hivPrep ,p.hivStatus as  hivStatus ,
-p.hivSuppressed as  hivSuppressed ,p.monkeypoxCare as  monkeypoxCare, p.monkeypoxTest as  monkeypoxTest,
+p.hivSuppressed as  hivSuppressed , p.lastQuestion as lastQuestion,
+p.monkeypoxCare as  monkeypoxCare, p.monkeypoxTest as  monkeypoxTest,
 p.monkeypoxVaccine as  monkeypoxVaccine, p.monkeypoxDiagnosis as  monkeypoxDiagnosis, p.raceAsian as raceAsian, p.racePacific as racePacific ,
 p.raceBlack as  raceBlack, p.raceLatinx as  raceLatinx ,p.raceOther as  raceOther ,p.raceWhite as  raceWhite, 
 p.referrerEnglish as  referrerEnglish, p.referralType as referralTypeValue,
@@ -43,12 +47,19 @@ p.symptomRectalDiscomfort as  symptomRectalDiscomfort ,p.symptomSoreThroat as  s
 p.symptomSorePenis as symptomSorePenis,
 p.symptomSoresAnus as  symptomSoresAnus, p.symptomSwollenGlands as  symptomSwollenGlands ,
 p.travelTime as  travelTime ,p.vaccinationDate as  vaccinationDate , p.userId  as  userId, 
-p.createdAt as timeStamp
+p.createdAt as timeStamp, l.identifier as homeCensusTract, 
+collect({
+    placeSex: g.placeSex, 
+    createdAt: g.createdAt, 
+    placeType: g.placeType, 
+    censusTract: gc.identifier, 
+    placeFreqAttend: g.placeFreqAttend, 
+    placeFreqHaveSex: g.placeFreqHaveSex}) as places
 `
 
-export const checkSurveyCompleteCypher: string = `
+export const getLastQuestionCypher: string = `
 MATCH (p:Person { userId :  $userId})
-RETURN p.completeResponse as completeResponse
+RETURN p.lastQuestion as lastQuestion
 `
 
 

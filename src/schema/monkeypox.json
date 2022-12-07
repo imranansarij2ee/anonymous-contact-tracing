@@ -26,9 +26,6 @@
     "channel": {
       "type": "string"
     },
-    "completeResponse:": {
-      "type": "boolean"
-    },
     "countFriends": {
       "type": "number"
     },
@@ -63,6 +60,9 @@
       "type": "string"
     },
     "homeCensusTract": {
+      "type": "string"
+    },
+    "lastQuestion": {
       "type": "string"
     },
     "monkeypoxCare": {

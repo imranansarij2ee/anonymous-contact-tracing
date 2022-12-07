@@ -4,7 +4,6 @@ export default interface Survey {
     age: string;
     bestApp: Array<string>;
     "channel": string;
-    "completeSurvey": boolean;
     "countFriends": number;
     "countPhysical": number;
     "countSex": number;
@@ -16,6 +15,7 @@ export default interface Survey {
     "hivStatus": string;
     "hivSuppressed": string;
     "homeCensusTract": string;
+    "lastQuestion": string;
     "mapGroupSex": string;
     "monkeypoxCare": string;
     "monkeypoxTest": string;

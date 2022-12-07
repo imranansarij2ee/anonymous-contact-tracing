@@ -83,7 +83,7 @@ export async function getUserPrivateIdFromUserName(username: string): Promise<st
         const data = Array.isArray(results) && results.length > 0 ?
             results.pop() : null;
         await client.release();
-        return data.private_id || null;
+        return data || null;
     } catch (error) {
         throw new Error("getUserPrivateId: sql issue");
     }

@@ -48,6 +48,7 @@ export const createReferralRelation = async (req: Request, res: Response) => {
 
 export const updateSurvey = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
+
     if(isEmpty(survey.publicID)){
         return res.status(400).json({message:"publicID is required"});
     }
@@ -66,16 +67,14 @@ export const updateSurvey = async (req: Request, res: Response) => {
 };
 
 
-export const checkSurveyComplete = async (req: Request, res: Response) => {
+export const getLastQuestion = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
     if(isEmpty(survey.userName)){
         return res.status(400).json({message:"userName is required"});
     }
 
-console.log("survey checkSurveyComplete", survey)
-
     try {
-        const data: Object | null = await NeoClient.checkSurveyComplete(survey);
+        const data: Object | null = await NeoClient.getLastQuestion(survey);
         console.log("data", data)
         return res.status(200).json(data);
     } catch (e) {

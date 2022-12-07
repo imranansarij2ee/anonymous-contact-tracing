@@ -10,12 +10,13 @@ import {
     livesInRelationCypher,
     referralTypeMapping,
     sexWithRelationCypher,
-    checkSurveyCompleteCypher
+    getLastQuestionCypher
 
 } from '../lib/constant'
 import * as SqlClient from '../database/sql'
 import {isEmpty, isValidUUID} from "../lib/helper";
 import {getUserPrivateIdFromUserName} from "../database/sql";
+import User from "../model/user";
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ export const createSurveyEntry = async (survey: Survey): Promise<Object> => {
 
         await createRelation(survey);
 
+        console.log("createRelation done")
 
     } catch (e) {
         console.log(e)
@@ -153,43 +155,67 @@ const runRelationCypher = async (cypher: string, args: Object): Promise<void> =>
 
 
 export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
-    const privateId = await SqlClient.getUserPrivateId(survey.publicID);
-    if (privateId === null) {
-        throw new Error("user private id not found");
-    }
-    survey.userId = privateId;
-    const session = driver.session();
 
+    const privateId = await SqlClient.getUserPrivateId(survey.publicID);
+
+    if (privateId === null) {throw new Error("user private id not found");}
+
+    survey.userId = privateId;
+
+    const session = driver.session();
     try {
         const savedSurveyRaw = await session.run(
             getSurveyCypher,
             {userId: privateId}
         );
 
-
-
         const savedSurvey = Object.create({})
         // @ts-ignore
-        savedSurveyRaw.records[0].keys.forEach((key, i) => savedSurvey[key] = savedSurveyRaw.records[0]._fields[i]);
-
+        savedSurveyRaw.records !== [] && savedSurveyRaw.records[0].keys.forEach((key, i) => savedSurvey[key] = savedSurveyRaw.records[0]._fields[i]);
 
 
         const incomingSurvey = Object.create(survey);
 
+
         const newSurvey = Object.keys(savedSurvey).reduce(function(result, key) {
             // @ts-ignore
-            result[key] =  savedSurvey[key] === "" ?
-                incomingSurvey[key] ? incomingSurvey[key] : ""
-                    : savedSurvey[key];
+
+            result[key] = incomingSurvey[key]
+
+            if (incomingSurvey[key] === "") {
+                result[key] = savedSurvey[key]
+            }
+
+            if (incomingSurvey[key] === []) {
+                result[key] = savedSurvey[key]
+            }
+
+            if (key.includes("race") && incomingSurvey["homeCensusTract"] === "") {
+                result[key] = savedSurvey[key]
+            }
+
+            if (key.includes("symptom") && incomingSurvey["monkeypoxCare"] === "") {
+                result[key] = savedSurvey[key]
+            }
+
+
             return result;
         }, Object.create({}))
 
 
+        let referralTypeValue: any;
+        const timeStamp = new Date().toISOString();
+        referralTypeValue = isEmpty(survey.referrerID) ? "NONE" : referralTypeMapping.get(survey.referralType);
+        const surveyArgs = {...newSurvey, referralTypeValue, timeStamp};
+
+console.log("surveyArgs", surveyArgs)
 
         await session.run(
             createSurveyCypher,
-            newSurvey
+            surveyArgs
         );
+
+        await createRelation(newSurvey);
 
     } catch (e) {
         console.log(e)
@@ -201,12 +227,15 @@ export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
 }
 
-export const checkSurveyComplete = async (survey: Survey): Promise<Object> => {
+export const getLastQuestion = async (survey: Survey): Promise<Object> => {
 
-    console.log("start checksurveycomplete")
-    const privateId = await SqlClient.getUserPrivateIdFromUserName(survey.userName);
+    const response = await SqlClient.getUserPrivateIdFromUserName(survey.userName);
 
-console.log("privateId", privateId)
+    // @ts-ignore
+    const privateId = response.private_id
+    // @ts-ignore
+    const publicId = response.public_id
+
 
     if (privateId === null) {
         throw new Error("user private id not found");
@@ -216,20 +245,20 @@ console.log("privateId", privateId)
 
     console.log("privateId", privateId)
     try {
-        const surveyCompletenessRaw = await session.run(
-            checkSurveyCompleteCypher,
+        const lastQuestionRaw = await session.run(
+            getLastQuestionCypher,
             {userId: privateId}
         );
 
-        console.log("surveyCompletenessRaw", surveyCompletenessRaw)
+        console.log("lastQuestionRaw", lastQuestionRaw)
 
-        const surveyCompleteness = Object.create({})
+        const LastQuestion = Object.create({})
         // @ts-ignore
-        surveyCompletenessRaw.records[0].keys.forEach((key, i) => surveyCompleteness[key] = surveyCompletenessRaw.records[0]._fields[i]);
+        lastQuestionRaw.records[0].keys.forEach((key, i) => LastQuestion[key] = lastQuestionRaw.records[0]._fields[i]);
 
-console.log("surveyCompleteness", surveyCompleteness)
+console.log("surveyCompleteness", LastQuestion)
 
-        return (surveyCompleteness.completeResponse)
+        return ({lastQuestion: LastQuestion.lastQuestion, publicId: publicId})
 
     } catch (e) {
         console.log(e)

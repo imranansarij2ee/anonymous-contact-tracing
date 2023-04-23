@@ -153,7 +153,7 @@ const runRelationCypher = async (cypher: string, args: Object): Promise<void> =>
 
 export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
-    const surveyData = survey.surveyData:;
+    const surveyData = survey.surveyData;
     const cypherQueries = survey.cypher;
 
 

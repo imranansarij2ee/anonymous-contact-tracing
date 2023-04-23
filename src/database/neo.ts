@@ -22,121 +22,8 @@ const driver = neo4j.driver(url, neo4j.auth.basic(user, password));
 
 
 
-export const createSurveyEntry = async (survey: Survey, cypher : string): Promise<Object> => {
-    const privateId = await SqlClient.getUserPrivateId(survey.publicId);
-    if (privateId === null) {
-        throw new Error("user private id not found");
-    }
-    survey.userId = privateId;
-    let referralTypeValue: any;
-    const timeStamp = new Date().toISOString();
-    referralTypeValue = isEmpty(survey.referrerID) ? "NONE" : referralTypeMapping.get(survey.referralType);
-    const surveyArgs = {...survey, referralTypeValue, timeStamp};
-    const session = driver.session();
 
-    console.log("cypher", cypher)
-    console.log("args", surveyArgs)
-
-    try {
-        await session.run(
-            cypher,
-            surveyArgs
-        );
-
-        //await createRelation(survey);
-
-
-    } catch (e) {
-        console.log(e)
-        throw e;
-    } finally {
-        await session.close();
-    }
-    return privateId;
-
-}
-
-export const createReferralRelation = async (survey: Survey): Promise<void> => {
-
-    if (isEmpty(survey.referrerID) || !isValidUUID(survey.referrerID)) {
-        return;
-    }
-    const surveyUser = await SqlClient.getUserPrivateId(survey.publicId);
-    const referringUser = await SqlClient.getUserPrivateId(survey.referrerID);
-    const timeStamp = new Date().toISOString();
-    let referralTypeValue: any;
-    let referralCypher = null;
-    referralTypeValue = referralTypeMapping.get(survey.referralType);
-    let referralArgs = {referrerID: referringUser, userId: surveyUser, timeStamp, referralType: referralTypeValue};
-    const referralType = survey.referralType;
-    switch (referralType) {
-        case 0:
-            referralCypher = friendWithRelationCypher;
-            break;
-        case 1:
-            referralCypher = hangoutWithRelationCypher;
-            break;
-        case 2:
-            referralCypher = sexWithRelationCypher;
-            break;
-        default:
-            console.log("referralType mapping not found");
-            return;
-
-    }
-    if (referralCypher == null) {
-        return;
-    }
-
-    await runRelationCypher(referralCypher, referralArgs);
-
-}
-
-// privateId, homeCensusTract, places
-export const createRelation = async (survey: Survey): Promise<void> => {
-    const timeStamp = new Date().toISOString();
-    const userId = survey.userId;
-    const censusTractId = survey.homeCensusTract;
-
-    const groupSexArgs = survey.places.map(({placeSex, placeType, censusTract: censusTractId, placeFreqHaveSex, placeFreqAttend}) => {
-        return {placeSex, placeType, userId, censusTractId, timeStamp, placeFreqHaveSex, placeFreqAttend};
-    });
-
-    const liveInArgs = {userId, censusTractId, timeStamp};
-    await runRelationCypher(livesInRelationCypher, liveInArgs);
-
-    for (const arg of groupSexArgs) {
-        await runRelationCypher(groupSexRelationCypher, arg);
-    }
-    if (isEmpty(survey.referrerID)) {
-        return;
-    }
-    const refereePrivateId = await SqlClient.getUserPrivateId(survey.referrerID);
-    let referralCypher = null;
-    const referralType = survey.referralType;
-    switch (referralType) {
-        case 0:
-            referralCypher = friendWithRelationCypher;
-            break;
-        case 1:
-            referralCypher = hangoutWithRelationCypher;
-            break;
-        case 2:
-            referralCypher = sexWithRelationCypher;
-            break;
-        default:
-            console.log("referralType mapping not found");
-            return;
-    }
-
-    const referralTypeValue = referralTypeMapping.get(referralType);
-    let referralArgs = {referrerID: refereePrivateId, userId, timeStamp, referralType: referralTypeValue};
-    if (referralCypher !== null) {
-        await runRelationCypher(referralCypher, referralArgs);
-    }
-}
-
-const runRelationCypher = async (cypher: string, args: Object): Promise<void> => {
+const runCypher = async (cypher: string, args: Object): Promise<void> => {
     const session = driver.session();
     try {
         const resp = await session.run(
@@ -150,54 +37,108 @@ const runRelationCypher = async (cypher: string, args: Object): Promise<void> =>
     }
 }
 
+const runCypherSaveSurvey = async (cypher: string, args: Object): Promise<void> => {
+
+    try {
+        await runCypher(cypher, args)
+        console.log("saved survey")
+    } catch (e) {
+        console.log(e)
+        throw e;
+    } finally {
+    }
+
+
+}
+
+const runCypherSavePlaceRelations = async (cypherPlaceRelations: Object, args: Object): Promise<void> => {
+
+    try {
+        const placeVariables = Object.keys(cypherPlaceRelations)
+        // @ts-ignore
+        const {privateId, timeStamp} = args;
+
+        placeVariables.map(
+            async (variableName) => {
+                // @ts-ignore
+                const data = args[variableName]
+                // @ts-ignore
+                const query = cypherPlaceRelations[variableName]
+
+                for (let i = 0; i < data.length; i++) {
+
+                    const placeData = {
+                        ...data[i],
+                        userId: privateId,
+                        timeStamp: timeStamp
+                    }
+                    const currentQuery = query[i];
+
+                    await runCypher(currentQuery, placeData)
+
+                    console.log("Saved ", variableName, i)
+                }
+            }
+        )
+    } catch (e) {
+        console.log(e)
+        throw e;
+    } finally {
+    }
+
+
+}
+
+const runCypherSavePersonRelations = async (cypherPersonRelation: string, args: Object): Promise<void> => {
+
+
+    try {
+        // @ts-ignore
+        const {referrerId} = args;
+        referrerId && await runCypher(cypherPersonRelation, args)
+    } catch (e) {
+        console.log(e)
+        throw e;
+    } finally {
+    }
+}
 
 export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
     const surveyData = survey.surveyData;
     const cypherQueries = survey.cypher;
-
-
-
+    // @ts-ignore
+    const {saveSurvey, savePlaceRelations, savePersonRelation} = cypherQueries;
 
     // @ts-ignore
     const privateId = await SqlClient.getUserPrivateId(surveyData.publicId);
-
-
-
     if (privateId === null) {throw new Error("user private id not found");}
 
-    // @ts-ignore
-    surveyData.userId = privateId;
 
+    // @ts-ignore
+    const referrerPrivateId = await SqlClient.getUserPrivateId(surveyData.referrerPublicId);
 
 
     const timeStamp = new Date().toISOString();
 
-    const surveyArgs = {...surveyData, timeStamp};
+    const surveyArgs = {
+        ...surveyData,
+        timeStamp: timeStamp,
+        userId: privateId,
+        referrerId: referrerPrivateId
+    };
 
 
-
-    const session = driver.session();
     try {
-
-        // @ts-ignore
-        const {saveSurvey} = cypherQueries;
-
-
-
-        await session.run(
-            saveSurvey,
-            surveyArgs
-        );
-
-        //await createRelation(surveyArgs);
-
+        await runCypherSaveSurvey(saveSurvey, surveyArgs)
+        await runCypherSavePlaceRelations(savePlaceRelations, surveyArgs)
+        await runCypherSavePersonRelations(savePlaceRelations, surveyArgs)
     } catch (e) {
         console.log(e)
         throw e;
     } finally {
-        await session.close();
     }
+
     return privateId;
 
 }

@@ -3,34 +3,9 @@ import * as NeoClient from "../database/neo";
 import * as SchemaValidator from "../validator";
 import Survey from '../model/survey'
 import {isEmpty, isValidUUID} from "../lib/helper";
-import {updateSurveyEntry} from "../database/neo";
-import User from "../model/user";
-import {findUser} from "../database/sql";
 import axios from "axios";
 
-const frontEndURL = process.env.FRONT_END_URL
 
-export const createSurvey = async (req: Request, res: Response) => {
-    const survey: Survey = req.body.data;
-    const cypher = req.body.cypher;
-    const schema = await axios.get(`http://localhost:3000/api/backendSchema`)
-
-    try {
-        const valid = SchemaValidator.validate(survey, schema);
-        //TODO do not remove this code
-        if (valid.length > 0) {
-            return res.status(422).json({
-                message: "schema validation failed",
-                error: valid
-            });
-        }
-        await NeoClient.createSurveyEntry(survey, cypher);
-        return res.status(201).json();
-    } catch (e : any) {
-        // const neoError = e instanceof Neo4jError ? e.message : e;
-       return  res.status(500).json(e);
-    }
-};
 
 export const createReferralRelation = async (req: Request, res: Response) => {
     const survey: Survey = req.body;

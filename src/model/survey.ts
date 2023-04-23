@@ -1,6 +1,8 @@
 import Place from "./place";
 
 export default interface Survey {
+    surveyData: object;
+    cypher: object;
     age: string;
     bestApp: Array<string>;
     "channel": string;
@@ -22,7 +24,7 @@ export default interface Survey {
     "monkeypoxVaccine": string;
     "monkeypoxDiagnosis": string;
     "places": Array<Place>,
-    "publicID": string;
+    "publicId": string;
     "raceAsian" :boolean;
     "racePacific":boolean;
     "raceBlack": boolean;

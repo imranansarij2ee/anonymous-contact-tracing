@@ -6,11 +6,17 @@ import {isEmpty, isValidUUID} from "../lib/helper";
 import {updateSurveyEntry} from "../database/neo";
 import User from "../model/user";
 import {findUser} from "../database/sql";
+import axios from "axios";
+
+const frontEndURL = process.env.FRONT_END_URL
 
 export const createSurvey = async (req: Request, res: Response) => {
-    const survey: Survey = req.body;
+    const survey: Survey = req.body.data;
+    const cypher = req.body.cypher;
+    const schema = await axios.get(`http://localhost:3000/api/backendSchema`)
+
     try {
-        const valid = SchemaValidator.validate(survey);
+        const valid = SchemaValidator.validate(survey, schema);
         //TODO do not remove this code
         if (valid.length > 0) {
             return res.status(422).json({
@@ -18,7 +24,7 @@ export const createSurvey = async (req: Request, res: Response) => {
                 error: valid
             });
         }
-        await NeoClient.createSurveyEntry(survey);
+        await NeoClient.createSurveyEntry(survey, cypher);
         return res.status(201).json();
     } catch (e : any) {
         // const neoError = e instanceof Neo4jError ? e.message : e;
@@ -28,11 +34,11 @@ export const createSurvey = async (req: Request, res: Response) => {
 
 export const createReferralRelation = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
-    if(isEmpty(survey.publicID) || isEmpty(survey.referrerID)){
+    if(isEmpty(survey.publicId) || isEmpty(survey.referrerID)){
         return res.status(400).json({message:"publicID and referrerID is required"});
     }
 
-    if(!isValidUUID(survey.publicID) || !isValidUUID(survey.referrerID)){
+    if(!isValidUUID(survey.publicId) || !isValidUUID(survey.referrerID)){
         return res.status(400).json({message:"publicID and referrerID must be a valid uuid"});
     }
 
@@ -49,15 +55,20 @@ export const createReferralRelation = async (req: Request, res: Response) => {
 export const updateSurvey = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
 
-    if(isEmpty(survey.publicID)){
-        return res.status(400).json({message:"publicID is required"});
-    }
+    const schema = await axios.get("http://localhost:3000/api/backendSchema")
 
-    if(!isValidUUID(survey.publicID)){
-        return res.status(400).json({message:"publicID must be a valid uuid"});
+
+    const valid = SchemaValidator.validate(survey, schema);
+
+    if (valid.length > 0) {
+        return res.status(422).json({
+            message: "schema validation failed",
+            error: valid
+        });
     }
 
     try {
+        console.log("now writieing")
         await NeoClient.updateSurveyEntry(survey);
         return res.status(201).json();
     } catch (e) {

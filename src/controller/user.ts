@@ -9,7 +9,7 @@ import {isValidEmail, isValidUUID} from "../lib/helper";
 export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await generateUser();
-        console.log("generated user", user)
+
         return res.status(200).json(user);
     } catch (e) {
         return res.status(404).json(e);

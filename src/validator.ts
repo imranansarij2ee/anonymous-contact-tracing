@@ -5,10 +5,11 @@ import * as monkeyPoxSchema from './schema/monkeypox.json'
 
 const schemaValidator: Validator = new JsonSchema.Validator();
 
-export function validate(payload: Object): Array<string> {
+export function validate(payload: Object, schema: Object): Array<string> {
 
-    const validation: ValidatorResult = schemaValidator.validate(payload, monkeyPoxSchema);
+    const validation: ValidatorResult = schemaValidator.validate(payload, schema);
     if (validation.valid && validation.errors.length === 0) {
+        console.log("validated")
         return [];
     } else {
         return validation.errors.map((e) => `${e.property} ${e.message}`);

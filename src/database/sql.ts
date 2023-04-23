@@ -52,7 +52,7 @@ export async function getUserPrivateId(publicId: string): Promise<string> {
                  FROM user_info
                  WHERE public_id = '${publicId}'`;
 
-    console.log("publicId", publicId)
+
     try {
         const client = await pool.connect();
         const {rowCount, rows: results} = await client.query(sql);

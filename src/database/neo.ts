@@ -23,13 +23,14 @@ const driver = neo4j.driver(url, neo4j.auth.basic(user, password));
 
 
 
-const runCypher = async (cypher: string, args: Object): Promise<void> => {
+const runCypher = async (cypher: string, args: Object): Promise<boolean> => {
     const session = driver.session();
     try {
         const resp = await session.run(
             cypher,
             args
         )
+        return true
     } catch (e: any) {
         throw e;
     } finally {
@@ -38,7 +39,7 @@ const runCypher = async (cypher: string, args: Object): Promise<void> => {
 }
 
 const runCypherSaveSurvey = async (cypher: string, args: Object): Promise<void> => {
-
+console.log("start runCypherSaveSurvey")
     try {
         await runCypher(cypher, args)
         console.log("saved survey")
@@ -51,35 +52,63 @@ const runCypherSaveSurvey = async (cypher: string, args: Object): Promise<void> 
 
 }
 
-const runCypherSavePlaceRelations = async (cypherPlaceRelations: Object, args: Object): Promise<void> => {
+const runCypherSavePlaceRelations = async (clearPlaceRelations: string, cypherPlaceRelations: Object, args: Object): Promise<void> => {
+    console.log("start runCypherSavePlaceRelations")
 
     try {
         const placeVariables = Object.keys(cypherPlaceRelations)
         // @ts-ignore
-        const {privateId, timeStamp} = args;
+        const {userId, timeStamp} = args;
 
-        placeVariables.map(
-            async (variableName) => {
-                // @ts-ignore
-                const data = args[variableName]
-                // @ts-ignore
-                const query = cypherPlaceRelations[variableName]
+        const cleared = await runCypher(clearPlaceRelations, args)
 
-                for (let i = 0; i < data.length; i++) {
+        for (let i=0; i < placeVariables.length; i++) {
+            // @ts-ignore
+            const data = args[placeVariables[i]]
+            // @ts-ignore
+            const query = cypherPlaceRelations[placeVariables[i]]
 
-                    const placeData = {
-                        ...data[i],
-                        userId: privateId,
-                        timeStamp: timeStamp
-                    }
-                    const currentQuery = query[i];
+            for (let j=0; j < data.length; j++) {
 
-                    await runCypher(currentQuery, placeData)
-
-                    console.log("Saved ", variableName, i)
+                const placeData = {
+                    ...data[j],
+                    userId: userId,
+                    timeStamp: timeStamp
                 }
+                const currentQuery = query[j];
+
+                console.log("saved", placeVariables[i], "number", j)
+
+                cleared && await runCypher(currentQuery, placeData)
             }
-        )
+        }
+
+        // placeVariables.map(
+        //     async (variableName) => {
+        //         // @ts-ignore
+        //         const data = args[variableName]
+        //         // @ts-ignore
+        //         const query = cypherPlaceRelations[variableName]
+        //
+        //         console.log("how many enttires in place array", data.length)
+        //
+        //         for (let i = 0; i < data.length; i++) {
+        //
+        //             const placeData = {
+        //                 ...data[i],
+        //                 userId: userId,
+        //                 timeStamp: timeStamp
+        //             }
+        //             const currentQuery = query[i];
+        //
+        //
+        //             cleared && await runCypher(currentQuery, placeData)
+        //
+        //             console.log("Saved ", variableName, i)
+        //             console.log("save query", currentQuery)
+        //         }
+        //     }
+        // )
     } catch (e) {
         console.log(e)
         throw e;
@@ -90,11 +119,14 @@ const runCypherSavePlaceRelations = async (cypherPlaceRelations: Object, args: O
 }
 
 const runCypherSavePersonRelations = async (cypherPersonRelation: string, args: Object): Promise<void> => {
-
+console.log("start runCypherSavePersonRelations")
 
     try {
         // @ts-ignore
         const {referrerId} = args;
+
+        console.log("args", args)
+        console.log("referrerId", referrerId)
         referrerId && await runCypher(cypherPersonRelation, args)
     } catch (e) {
         console.log(e)
@@ -107,39 +139,42 @@ export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
     const surveyData = survey.surveyData;
     const cypherQueries = survey.cypher;
-    // @ts-ignore
-    const {saveSurvey, savePlaceRelations, savePersonRelation} = cypherQueries;
-
-    // @ts-ignore
-    const privateId = await SqlClient.getUserPrivateId(surveyData.publicId);
-    if (privateId === null) {throw new Error("user private id not found");}
-
-
-    // @ts-ignore
-    const referrerPrivateId = await SqlClient.getUserPrivateId(surveyData.referrerPublicId);
-
-
     const timeStamp = new Date().toISOString();
-
-    const surveyArgs = {
-        ...surveyData,
-        timeStamp: timeStamp,
-        userId: privateId,
-        referrerId: referrerPrivateId
-    };
+    // @ts-ignore
+    const {clearPlaceRelations, saveSurvey, savePlaceRelations, savePersonRelation} = cypherQueries;
 
 
     try {
+        // @ts-ignore
+        const privateId = await SqlClient.getUserPrivateId(surveyData.publicId);
+        if (privateId === null) {throw new Error("user private id not found");}
+
+
+        const surveyArgs = {
+            ...surveyData,
+            timeStamp: timeStamp,
+            userId: privateId
+        };
+
+
+        // @ts-ignore
+        if (surveyData.referrerPublicId) {
+            // @ts-ignore
+            surveyArgs.referrerId = await SqlClient.getUserPrivateId(surveyData.referrerPublicId);
+        }
+
+
         await runCypherSaveSurvey(saveSurvey, surveyArgs)
-        await runCypherSavePlaceRelations(savePlaceRelations, surveyArgs)
-        await runCypherSavePersonRelations(savePlaceRelations, surveyArgs)
+        await runCypherSavePlaceRelations(clearPlaceRelations, savePlaceRelations, surveyArgs)
+        await runCypherSavePersonRelations(savePersonRelation, surveyArgs)
+
+        return privateId;
     } catch (e) {
         console.log(e)
         throw e;
     } finally {
     }
 
-    return privateId;
 
 }
 

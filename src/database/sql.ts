@@ -26,7 +26,7 @@ async function checkIfNameExist(username: string): Promise<boolean> {
                  FROM user_info
                  WHERE user_name = '${username}'`;
     const user: User | null = await findUser(sql);
-    console.log("check if name exists", user)
+
     return user === null;
 }
 
@@ -56,8 +56,6 @@ export async function getUserPrivateId(publicId: string): Promise<string> {
     try {
         const client = await pool.connect();
         const {rowCount, rows: results} = await client.query(sql);
-        console.log("rowCount", rowCount)
-        console.log("resuilts", results)
 
         const data = Array.isArray(results) && results.length > 0 ?
             results.pop() : null;
@@ -73,12 +71,11 @@ export async function getUserPrivateIdFromUserName(username: string): Promise<st
                  FROM user_info
                  WHERE user_name = '${username}'`;
 
-    console.log("username", username)
+
     try {
         const client = await pool.connect();
         const {rowCount, rows: results} = await client.query(sql);
-        console.log("rowCount", rowCount)
-        console.log("resuilts", results)
+
 
         const data = Array.isArray(results) && results.length > 0 ?
             results.pop() : null;

@@ -38,15 +38,35 @@ export const updateSurvey = async (req: Request, res: Response) => {
 
 
 export const getLastQuestion = async (req: Request, res: Response) => {
+    console.log("starting  getLastQuestion")
     const survey: Survey = req.body;
-    if(isEmpty(survey.userName)){
-        return res.status(400).json({message:"userName is required"});
+
+    const schema = await axios.get("http://localhost:3000/api/backendSchema")
+
+
+
+    const valid = SchemaValidator.validate(survey, schema.data);
+
+
+    console.log("validity check", valid)
+
+    if (valid.length > 0) {
+        return res.status(422).json({
+            message: "schema validation failed",
+            error: valid
+        });
     }
 
     try {
-        const data: Object | null = await NeoClient.getLastQuestion(survey);
 
-        return res.status(200).json(data);
+console.log("about to get to client")
+        const lastQuestionResponse = await NeoClient.getLastQuestion(survey);
+
+        // @ts-ignore
+        console.log("response from newo4j", lastQuestionResponse)
+        console.log("response from newo4j", lastQuestionResponse)
+
+        return res.status(201).json(lastQuestionResponse);
     } catch (e) {
         // const neoError = e instanceof Neo4jError ? e.message : e;
         return res.status(500).json(e);

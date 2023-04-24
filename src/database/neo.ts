@@ -23,14 +23,15 @@ const driver = neo4j.driver(url, neo4j.auth.basic(user, password));
 
 
 
-const runCypher = async (cypher: string, args: Object): Promise<boolean> => {
+const runCypher = async (cypher: string, args: Object): Promise<any> => {
     const session = driver.session();
     try {
         const resp = await session.run(
             cypher,
             args
         )
-        return true
+        return resp
+
     } catch (e: any) {
         throw e;
     } finally {
@@ -135,6 +136,21 @@ console.log("start runCypherSavePersonRelations")
     }
 }
 
+const runCypherGetLast = async (cypherGetLastQuestion: string, args: Object): Promise<object> => {
+    console.log("now we are fetching last")
+    try {
+
+        const result = await runCypher(cypherGetLastQuestion, args)
+        return result
+        console.log("result of fetch", result)
+
+    } catch (e) {
+        console.log(e)
+        throw e;
+    } finally {
+    }
+}
+
 export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
     const surveyData = survey.surveyData;
@@ -180,43 +196,30 @@ export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
 export const getLastQuestion = async (survey: Survey): Promise<Object> => {
 
-    const response = await SqlClient.getUserPrivateIdFromUserName(survey.userName);
-
+    const surveyData = survey.surveyData;
     // @ts-ignore
-    const privateId = response.private_id
-    // @ts-ignore
-    const publicId = response.public_id
+    const getLastQuestionCypherQuery = survey.cypher.lastQuestionCypher;
 
 
-    if (privateId === null) {
-        throw new Error("user private id not found");
-    }
-    survey.userId = privateId;
-    const session = driver.session();
-
-    console.log("privateId", privateId)
     try {
-        const lastQuestionRaw = await session.run(
-            getLastQuestionCypher,
-            {userId: privateId}
-        );
-
-        console.log("lastQuestionRaw", lastQuestionRaw)
-
-        const LastQuestion = Object.create({})
         // @ts-ignore
-        lastQuestionRaw.records[0].keys.forEach((key, i) => LastQuestion[key] = lastQuestionRaw.records[0]._fields[i]);
+        const privateId = await SqlClient.getUserPrivateId(surveyData.publicId);
+        if (privateId === null) {
+            throw new Error("user private id not found");
+        }
 
-console.log("surveyCompleteness", LastQuestion)
 
-        return ({lastQuestion: LastQuestion.lastQuestion, publicId: publicId})
+        const surveyArgs = {
+            userId: privateId
+        };
 
+
+        // @ts-ignore
+        const result = await runCypherGetLast(getLastQuestionCypherQuery, surveyArgs)
+        return result
     } catch (e) {
         console.log(e)
         throw e;
     } finally {
-        await session.close();
     }
-
-
 }

@@ -10,6 +10,7 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await generateUser();
 
+
         return res.status(200).json(user);
     } catch (e) {
         return res.status(404).json(e);
@@ -88,18 +89,22 @@ export const getUserByPrivateId = async (req: Request, res: Response) => {
 };
 
 export const getUserByUserName = async (req: Request, res: Response) => {
+    console.log("getting user by username:", req.params.username)
     const username = req.params.username;
     try {
-        const sql = `SELECT private_id
+        const sql = `SELECT *
                      FROM user_info
                      WHERE user_name = '${username}' LIMIT 1`;
         const data: User | null = await findUser(sql);
+
+        console.log("getting user by username result", data)
 
         if (data == null) {
             return res.status(404).json({
                 "message": `resource with username : ${username} not found.`
             })
         }
+
         return res.status(200).json(data);
     } catch (e) {
         return res.status(500).json(e);

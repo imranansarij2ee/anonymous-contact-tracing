@@ -183,6 +183,8 @@ export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
         await runCypherSaveSurvey(saveSurvey, surveyArgs)
         await runCypherSavePlaceRelations(clearPlaceRelations, savePlaceRelations, surveyArgs)
         await runCypherSavePersonRelations(savePersonRelation, surveyArgs)
+        // runCypherSaveVirusRelations
+
 
         return privateId;
     } catch (e) {

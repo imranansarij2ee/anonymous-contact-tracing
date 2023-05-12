@@ -14,9 +14,7 @@ export const updateSurvey = async (req: Request, res: Response) => {
     const schema = await axios.get("http://localhost:3000/api/backendSchema")
 
 
-
     const valid = SchemaValidator.validate(survey, schema.data);
-
 
 
     if (valid.length > 0) {
@@ -29,10 +27,42 @@ export const updateSurvey = async (req: Request, res: Response) => {
     try {
 
         await NeoClient.updateSurveyEntry(survey);
-        return res.status(201).json();
+        return res.status(201).json({status: "success"}).end();
     } catch (e) {
         // const neoError = e instanceof Neo4jError ? e.message : e;
-        return res.status(500).json(e);
+        return res.status(500).json(e).end();
+    }
+};
+
+export const submitCookie = async (req: Request, res: Response) => {
+    const survey: Survey = req.body;
+
+    const schema = await axios.get("http://localhost:3000/api/backendSchema")
+
+
+    const valid = SchemaValidator.validate(survey, schema.data);
+
+
+    if (valid.length > 0) {
+        return res.status(422).json({
+            message: "schema validation failed",
+            error: valid
+        });
+    }
+
+    try {
+
+        console.log("payload received", survey)
+        // get public ID
+        // save survey
+        // return lastquestion and public id
+
+        await NeoClient.submitCookie(survey);
+
+        return res.status(201).json({status: "success"}).end();
+    } catch (e) {
+        // const neoError = e instanceof Neo4jError ? e.message : e;
+        return res.status(500).json(e).end();
     }
 };
 

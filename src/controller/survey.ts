@@ -4,14 +4,17 @@ import * as SchemaValidator from "../validator";
 import Survey from '../model/survey'
 import {isEmpty, isValidUUID} from "../lib/helper";
 import axios from "axios";
+import * as dotenv from "dotenv";
 
+dotenv.config();
 
+const frontendurl = process.env.FRONT_END_URL;
 
 
 export const updateSurvey = async (req: Request, res: Response) => {
     const survey: Survey = req.body;
 
-    const schema = await axios.get("http://localhost:3000/api/backendSchema")
+    const schema = await axios.get(`${frontendurl}/api/backendSchema`)
 
 
     const valid = SchemaValidator.validate(survey, schema.data);
@@ -38,7 +41,7 @@ export const submitCookie = async (req: Request, res: Response) => {
     console.log("cookie received")
     const survey: Survey = req.body;
 
-    const schema = await axios.get("http://localhost:3000/api/backendSchema")
+    const schema = await axios.get(`${frontendurl}/api/backendSchema`)
 
 
     const valid = SchemaValidator.validate(survey, schema.data);
@@ -74,7 +77,7 @@ export const getLastQuestion = async (req: Request, res: Response) => {
     console.log("starting  getLastQuestion")
     const survey: Survey = req.body;
 
-    const schema = await axios.get("http://localhost:3000/api/backendSchema")
+    const schema = await axios.get(`${frontendurl}/api/backendSchema`)
 
 
 

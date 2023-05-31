@@ -26,6 +26,7 @@ async function checkIfNameExist(username: string): Promise<boolean> {
                  FROM user_info
                  WHERE user_name = '${username}'`;
     const user: User | null = await findUser(sql);
+
     return user === null;
 }
 
@@ -50,6 +51,8 @@ export async function getUserPrivateId(publicId: string): Promise<string> {
     const sql = `SELECT private_id
                  FROM user_info
                  WHERE public_id = '${publicId}'`;
+
+
     try {
         const client = await pool.connect();
         const {rowCount, rows: results} = await client.query(sql);
@@ -63,26 +66,49 @@ export async function getUserPrivateId(publicId: string): Promise<string> {
     }
 }
 
+export async function getUserPrivateIdFromUserName(username: string): Promise<string> {
+    const sql = `SELECT *
+                 FROM user_info
+                 WHERE user_name = '${username}'`;
+
+
+    try {
+        const client = await pool.connect();
+        const {rowCount, rows: results} = await client.query(sql);
+
+
+        const data = Array.isArray(results) && results.length > 0 ?
+            results.pop() : null;
+        await client.release();
+        return data || null;
+    } catch (error) {
+        throw new Error("getUserPrivateId: sql issue");
+    }
+}
+
 export async function generateUser(): Promise<Object> {
     try {
         let user_name = generateUserName();
+        console.log("generated username", user_name)
 
         while (!await checkIfNameExist(user_name)) {
             user_name = generateUserName();
         }
+        console.log("still generated user_name", user_name)
         const client = await pool.connect();
         const public_id = v4();
         const private_id = v4();
         let insert_statement = `INSERT INTO user_info (user_name, public_id, private_id)
                                 VALUES ('${user_name}', '${public_id}', '${private_id}')`;
 
+        console.log("running sql query generate user")
         const {rowCount} = await client.query(insert_statement);
 
         await client.release();
         if (rowCount == 0) {
             throw new Error("no user created");
         }
-        return new User(user_name, public_id, "");
+        return new User(user_name, public_id, private_id);
         // client.release();
     } catch (error) {
         throw new Error("sql issue");

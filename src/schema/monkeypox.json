@@ -62,6 +62,9 @@
     "homeCensusTract": {
       "type": "string"
     },
+    "lastQuestion": {
+      "type": "string"
+    },
     "monkeypoxCare": {
       "type": "string"
     },

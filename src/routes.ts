@@ -1,8 +1,6 @@
 import express, {Request, Response} from 'express';
 import * as UserService from "./controller/user";
 import * as SurveyService from "./controller/survey";
-import * as VirusService from "./controller/viral";
-import {mutateVirus} from "./controller/viral";
 const router = express.Router()
 
 const apiKey: Array<string> = process.env.API_KEY ? process.env.API_KEY.split(",") : [];
@@ -42,11 +40,6 @@ router.post('/user/contact', UserService.createContact);
 // survey routes
 router.post('/survey/update', SurveyService.updateSurvey)
 router.post('/survey/getLastQuestion', SurveyService.getLastQuestion)
-router.post('/survey/cookie', SurveyService.submitCookie)
 
-// Viral routes
-router.post('/viral/mutate', VirusService.mutateVirus)
-router.post('/viral/create', VirusService.createVirus)
-router.post('/viral/fetch', VirusService.fetchVirus)
 
 export default router;

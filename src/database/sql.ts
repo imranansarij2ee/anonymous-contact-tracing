@@ -89,26 +89,23 @@ export async function getUserPrivateIdFromUserName(username: string): Promise<st
 export async function generateUser(): Promise<Object> {
     try {
         let user_name = generateUserName();
-        console.log("generated username", user_name)
 
         while (!await checkIfNameExist(user_name)) {
             user_name = generateUserName();
         }
-        console.log("still generated user_name", user_name)
         const client = await pool.connect();
         const public_id = v4();
         const private_id = v4();
         let insert_statement = `INSERT INTO user_info (user_name, public_id, private_id)
                                 VALUES ('${user_name}', '${public_id}', '${private_id}')`;
 
-        console.log("running sql query generate user")
         const {rowCount} = await client.query(insert_statement);
 
         await client.release();
         if (rowCount == 0) {
             throw new Error("no user created");
         }
-        return new User(user_name, public_id, private_id);
+        return new User(user_name, public_id, "");
         // client.release();
     } catch (error) {
         throw new Error("sql issue");

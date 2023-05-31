@@ -93,7 +93,7 @@ export const getLastQuestion = async (req: Request, res: Response) => {
     try {
 
 console.log("about to get to client")
-        const lastQuestionResponse = await NeoClient.getLastQuestion(survey);
+        const lastQuestionResponse = await NeoClient.getLastQuestion(survey, "");
 
         // @ts-ignore
         console.log("response from newo4j", lastQuestionResponse)

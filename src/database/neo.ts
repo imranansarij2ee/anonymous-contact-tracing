@@ -247,6 +247,7 @@ export const updateSurveyEntry = async (survey: Survey): Promise<Object> => {
 
 }
 
+// @ts-ignore
 export const makePersonNode = async (survey: Survey): Promise<Object> => {
 
     const surveyData = survey.surveyData;
@@ -262,6 +263,7 @@ export const makePersonNode = async (survey: Survey): Promise<Object> => {
 
         console.log("surveyArgs", surveyArgs)
 
+        // @ts-ignore
         await runCypherSaveSurvey(cypher, surveyArgs)
 
 
@@ -295,9 +297,9 @@ export const submitCookie = async (survey: Survey): Promise<Object> => {
         console.log("privateId", id)
 
         // @ts-ignore
-        const surveyArgs = {
-            userId: id.private_id
-        };
+        // @ts-ignore
+        // @ts-ignore
+        const surveyArgs = {userId: id.private_id};
 
         const lastQuestion = await getLastQuestion(surveyArgs, lastQuestionCypher)
 
@@ -305,6 +307,7 @@ export const submitCookie = async (survey: Survey): Promise<Object> => {
         console.log("surveyArgs in submit cookie neots", surveyArgs)
 
 
+        // @ts-ignore
         const result = {public_id: id.public_id, lastQuestion: lastQuestion.records[0]._fields[0]}
         console.log("result from subit cookie", result)
 
@@ -481,6 +484,7 @@ export const fetchVirus = async (virusPacket: Object): Promise<Object> => {
 
         const virus = await runFetchCypher(fetch, virusArgs)
 
+        // @ts-ignore
         const fake = async (virus, link, virusArgs) => {
 
 

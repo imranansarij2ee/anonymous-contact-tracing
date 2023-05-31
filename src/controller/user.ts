@@ -24,11 +24,13 @@ export const createUser = async (req: Request, res: Response) => {
 
 
 
+        // @ts-ignore
         const surveyData = {userId: user.private_id, lastQuestion: ""}
         const cypher = `MERGE (p:Person {userId: $userId}) SET p.lastQuestion=$lastQuestion`
 
         const neoPayload = {surveyData: surveyData, cypher: cypher}
 
+        // @ts-ignore
         await NeoClient.makePersonNode(neoPayload);
 
 

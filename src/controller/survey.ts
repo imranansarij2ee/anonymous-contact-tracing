@@ -35,6 +35,7 @@ export const updateSurvey = async (req: Request, res: Response) => {
 };
 
 export const submitCookie = async (req: Request, res: Response) => {
+    console.log("cookie received")
     const survey: Survey = req.body;
 
     const schema = await axios.get("http://localhost:3000/api/backendSchema")
@@ -57,11 +58,13 @@ export const submitCookie = async (req: Request, res: Response) => {
         // save survey
         // return lastquestion and public id
 
-        await NeoClient.submitCookie(survey);
+        const cookieResponse = await NeoClient.submitCookie(survey);
 
-        return res.status(201).json({status: "success"}).end();
+
+        return res.status(201).json(cookieResponse).end();
     } catch (e) {
         // const neoError = e instanceof Neo4jError ? e.message : e;
+        console.log("something went wrong")
         return res.status(500).json(e).end();
     }
 };

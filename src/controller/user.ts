@@ -3,12 +3,33 @@ import {findUser, generateUser, saveContact} from "../database/sql";
 import User from "../model/user";
 import {SqlError} from "../model/error";
 import {isValidEmail, isValidUUID} from "../lib/helper";
+import * as NeoClient from "../database/neo";
+import Survey from "../model/survey";
+import axios from "axios";
+import * as SchemaValidator from "../validator";
+import {makePersonNode} from "../database/neo";
 
 
 // Get user
 export const createUser = async (req: Request, res: Response) => {
+    console.log("creating user")
+
+
+
     try {
+
+
         const user = await generateUser();
+        console.log("created user", user)
+
+
+
+        const surveyData = {userId: user.private_id, lastQuestion: ""}
+        const cypher = `MERGE (p:Person {userId: $userId}) SET p.lastQuestion=$lastQuestion`
+
+        const neoPayload = {surveyData: surveyData, cypher: cypher}
+
+        await NeoClient.makePersonNode(neoPayload);
 
 
         return res.status(200).json(user);
